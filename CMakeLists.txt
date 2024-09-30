@@ -1,0 +1,4 @@
+cmake_minimum_required(VERSION 3.5)
+project(Modelling LANGUAGES CXX VERSION 1.0 DESCRIPTION "Investment portfolio management system")
+add_subdirectory(src/logic)
+add_subdirectory(src/app)

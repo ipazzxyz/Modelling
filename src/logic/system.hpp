@@ -4,20 +4,23 @@
 #include "market.hpp"
 
 class System {
- public:
+public:
   System(int month_count, double capitalization, double tax, double spread);
 
-  void Buy(Currency amount);
-  void Sell(Currency amount);
+  Fund GetFund() const;
+  Market GetMarket() const;
 
-  void NextMonth();
+  void Buy(Currency currency, double amount);
+  void Sell(Currency currency, double amount);
 
- private:
-  int month_count_;
-  double tax_;
+  void Iterate();
 
-  Fund fund_;
-  Market market_;
+private:
+  int month_amount;
+  double tax;
 
-  int current_month_;
+  Fund fund;
+  Market market;
+
+  int month_cnt;
 };

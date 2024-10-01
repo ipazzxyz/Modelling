@@ -1,13 +1,11 @@
 #include "currency.hpp"
 
-inline std::string ToString(Currency currency) {
+inline const char *ToString(Currency currency) {
   switch (currency) {
-    case Currency::kDollar:
-      return "Dollar";
-    case Currency::kHamster:
-      return "Hamster Coin";
-    case Currency::kRuble:
-      return "Ruble";
+  case Currency::Hamster:
+    return "Hamster Coin";
+  case Currency::Ruble:
+    return "Ruble";
   }
   return "";
 }

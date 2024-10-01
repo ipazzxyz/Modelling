@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
+enum class Currency { Hamster, Ruble, LAST };
 
-enum class Currency { kDollar, kHamster, kRuble };
-
-inline std::string ToString(Currency currency);
+inline const char *ToString(Currency currency);

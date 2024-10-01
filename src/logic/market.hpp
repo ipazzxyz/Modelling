@@ -1,17 +1,21 @@
 #pragma once
 
-#include <map>
-
 #include "currency.hpp"
+#include <map>
+#include <random>
 
 class Market {
- public:
+public:
   Market(double spread);
 
-  double operator[](Currency currency);
+  double GetBuyPrice(Currency currency);
+  double GetSellPrice(Currency currency);
 
- private:
-  double spread_;
+  void Iterate();
 
-  std::map<Currency, int> currency_exchange_rate_;
+private:
+  double spread;
+  std::mt19937 rng;
+
+  std::map<Currency, double> currency_exchange_rate;
 };

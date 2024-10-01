@@ -1,25 +1,30 @@
 #pragma once
 
-#include <exception>
-#include <map>
-
-#include "currency.hpp"
 #include "market.hpp"
 
 class Fund {
- public:
-  class NotEnoughMoney : public std::exception {
-   public:
-    const char* what();
-  };
-
+public:
   Fund(double capitalization);
 
-  void Buy(Market&);
-  void Sell(Market&);
+  double GetUnits() const;
+  double GetAmount(Currency currency);
+  double GetCapitalization(Market &market) const;
 
-  double GetCapitalization(Market&) const;
+  void Buy(Market &market, Currency currency, double amount);
+  void Sell(Market &market, Currency currency, double amount);
 
- private:
-  std::map<Currency, int> currency_amount_;
+  void Iterate();
+
+  class NotEnoughConventionalUnits : public std::exception {
+  public:
+    const char *what();
+  };
+  class NotEnoughCurrency : public std::exception {
+  public:
+    const char *what();
+  };
+
+private:
+  double conventional_units;
+  std::map<Currency, double> currency_amount;
 };

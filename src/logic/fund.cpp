@@ -2,7 +2,7 @@
 
 Fund::Fund(double capitalization) { conventional_units = capitalization; }
 
-double Fund::GetUnits() const { return conventional_units; }
+double Fund::GetConventionalUnits() const { return conventional_units; }
 double Fund::GetAmount(Currency currency) { return currency_amount[currency]; }
 double Fund::GetCapitalization(Market &market) const {
   double capitalization = 0;

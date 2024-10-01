@@ -6,7 +6,7 @@ class Fund {
 public:
   Fund(double capitalization);
 
-  double GetUnits() const;
+  double GetConventionalUnits() const;
   double GetAmount(Currency currency);
   double GetCapitalization(Market &market) const;
 

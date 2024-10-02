@@ -9,12 +9,12 @@ public:
   Fund(double capitalization);
 
   double GetConventionalUnits() const;
-  double GetAmount(Currency currency);
-  double GetCapitalization(Market &market) const;
+  double GetAmount(Currency currency) const;
+  double GetCapitalization(const Market &market) const;
 
-  void Buy(Market &market, Currency currency, double amount);
-  void Sell(Market &market, Currency currency, double amount);
-  void MakeDeposit(Market &market, double amount, int month);
+  void Buy(const Market &market, Currency currency, double amount);
+  void Sell(const Market &market, Currency currency, double amount);
+  void MakeDeposit(const Market &market, double amount, int month);
 
   void Iterate();
 

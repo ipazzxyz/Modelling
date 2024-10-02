@@ -8,8 +8,8 @@ class Market {
 public:
   Market(double spread);
 
-  double GetBuyPrice(Currency currency);
-  double GetSellPrice(Currency currency);
+  double GetBuyRate(Currency currency) const;
+  double GetSellRate(Currency currency) const;
   double GetDepositPercent(double amount, int month) const;
 
   void Iterate();

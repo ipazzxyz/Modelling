@@ -1,4 +1,4 @@
-add_library(ModellingLogic
+qt_add_library(ModellingLogic
     fund.hpp
     market.hpp
     system.hpp

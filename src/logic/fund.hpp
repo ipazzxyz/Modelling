@@ -1,6 +1,8 @@
 #pragma once
 
 #include "market.hpp"
+#include <queue>
+#include <utility>
 
 class Fund {
 public:
@@ -12,6 +14,7 @@ public:
 
   void Buy(Market &market, Currency currency, double amount);
   void Sell(Market &market, Currency currency, double amount);
+  void MakeDeposit(Market &market, double amount, int month);
 
   void Iterate();
 
@@ -25,6 +28,9 @@ public:
   };
 
 private:
+  int __cnt;
+
   double conventional_units;
   std::map<Currency, double> currency_amount;
+  std::queue<std::pair<int, double>> deposit;
 };

@@ -1,5 +1,5 @@
 #pragma once
 
-enum class Currency { Hamster, Ruble, LAST };
+enum class Currency { __First, Hamster, Ruble, __Last };
 
 inline const char *ToString(Currency currency);

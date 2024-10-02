@@ -1,14 +1,16 @@
 #pragma once
 
 #include "fund.hpp"
-#include "market.hpp"
 
 class System {
 public:
-  System(int month_count, double capitalization, double tax, double spread);
+  System(int month_amount, double capitalization, double tax, double spread);
 
   Fund GetFund() const;
   Market GetMarket() const;
+  int GetMonthCount() const;
+  int GetMonthAmount() const;
+  int GetMonthLeft() const;
 
   void Buy(Currency currency, double amount);
   void Sell(Currency currency, double amount);

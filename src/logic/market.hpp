@@ -10,6 +10,7 @@ public:
 
   double GetBuyPrice(Currency currency);
   double GetSellPrice(Currency currency);
+  double GetDepositPercent(double amount, int month) const;
 
   void Iterate();
 
@@ -18,4 +19,5 @@ private:
   std::mt19937 rng;
 
   std::map<Currency, double> currency_exchange_rate;
+  double deposit_percent;
 };

@@ -28,9 +28,10 @@ public:
   };
 
 private:
-  int __cnt;
+  int __cnt; // TODO: удалить нахуй
 
   double conventional_units;
+  // TODO: общая капитализация
   std::map<Currency, double> currency_amount;
   std::queue<std::pair<int, double>> deposit;
 };

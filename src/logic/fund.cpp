@@ -7,6 +7,7 @@ Fund::Fund(double capitalization)
 double Fund::GetConventionalUnits() const { return conventional_units; }
 double Fund::GetAmount(Currency currency) const { return currency_amount.at(currency); }
 double Fund::GetCapitalization(const Market &market) const {
+  // TODO: удалить b пересчитывать в момент покупки/продажи
   double capitalization = 0;
   for (std::pair<const Currency, int> i : currency_amount) {
     capitalization += market.GetSellRate(i.first) * i.second;
@@ -38,9 +39,9 @@ void Fund::MakeDeposit(const Market &market, double amount, int month) {
       std::make_pair(__cnt + month, market.GetDepositPercent(amount, month)));
 }
 
-void Fund::Iterate() {
+void Fund::Iterate(/* TODO: Market*/) {
   if (deposit.front().first == ++__cnt) {
-    conventional_units += deposit.front().second;
+    conventional_units += deposit.front().second;//хуй
     deposit.pop();
   }
 }

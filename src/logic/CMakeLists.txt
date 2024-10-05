@@ -1,8 +1,10 @@
 qt_add_library(ModellingLogic
+        asset.hpp
     fund.hpp
     market.hpp
     system.hpp
     currency.hpp
+        asset.cpp
     fund.cpp
     market.cpp
     system.cpp

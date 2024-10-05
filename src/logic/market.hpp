@@ -7,19 +7,18 @@
 
 class Market {
 public:
-  Market(double spread);
+  Market(double spread, int cnt_months);
 
-  double GetBuyRate(Currency currency) const;
-  double GetSellRate(Currency currency) const;
-  double GetDepositPercent(double amount, int month) const;
+  std::pair<double, double> GetBuyRate(Currency currency) const;
+  std::pair<double, double> GetSellRate(Currency currency) const;
+  double GetDepositPercent() const;
 
   void Iterate();
 
 private:
   double spread;
   std::mt19937 rng;
-
-  std::map<Currency, double> currency_exchange_rate; //TODO: std::vector<Currency>
+  std::map<Currency, Asset> currency_exchange_rate;
   double deposit_percent;
-  // TODO: vector<double> deposit(M);
+  std::vector<double> deposit;
 };

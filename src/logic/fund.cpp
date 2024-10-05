@@ -5,7 +5,9 @@ Fund::Fund(double capitalization)
     : __cnt(0), conventional_units(capitalization) {}
 
 double Fund::GetConventionalUnits() const { return conventional_units; }
+
 double Fund::GetAmount(Currency currency) const { return currency_amount.at(currency); }
+
 double Fund::GetCapitalization(const Market &market) const {
   // TODO: удалить b пересчитывать в момент покупки/продажи
   double capitalization = 0;

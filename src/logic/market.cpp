@@ -2,24 +2,33 @@
 
 #include <ctime>
 
-Market::Market(double spread)
-    : deposit_percent(20), spread(spread), rng(std::time(nullptr)) {}
+Market::Market(double spread, int cnt_months)
+    : deposit_percent(20), spread(spread), rng(std::time(nullptr)), deposit(cnt_months+1, 0) {}
 
-double Market::GetBuyRate(Currency currency) const {
-  return currency_exchange_rate.at(currency);
+std::pair<double, double> Market::GetBuyRate(Currency currency) const {
+    if (!currency_exchange_rate.count(currency)) {
+        throw std::out_of_range("нет такого Currency");
+    }
+    return currency_exchange_rate.at(currency).GetBuyRate();
 }
-double Market::GetSellRate(Currency currency) const {
-  return currency_exchange_rate.at(currency);
-}
-double Market::GetDepositPercent(double amount, int month) const {
-  return deposit_percent;
+std::pair<double, double> Market::GetSellRate(Currency currency) const {
+    if (!currency_exchange_rate.count(currency)) {
+        throw std::out_of_range("нет такого Currency");
+    }
+    return currency_exchange_rate.at(currency).GetSellRate();
 }
 
 void Market::Iterate() {
   for (int i = 1; static_cast<Currency>(i) != Currency::__Last; ++i) {
-    currency_exchange_rate[static_cast<Currency>(i)] *=
-        2 * spread * static_cast<double>(rng()) /
-            static_cast<double>(rng.max()) +
-        1 - spread;
+      currency_exchange_rate.at(static_cast<Currency>(i)).Iterate(static_cast<double>(rng()) /
+      static_cast<double>(rng.max()), spread);
   }
+  deposit_percent *= 2 * (static_cast<double>(rng()) / static_cast<double>(rng.max())) *
+          spread - spread + 1;
+  if (deposit_percent > 0.17)
+      deposit_percent = 0.17;
+}
+
+double Market::GetDepositPercent() const {
+    return deposit_percent;
 }

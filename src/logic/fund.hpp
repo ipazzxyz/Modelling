@@ -6,7 +6,7 @@
 
 class Fund {
 public:
-  Fund(double capitalization);
+  Fund(double capitalization_);
 
   double GetConventionalUnits() const;
   double GetAmount(Currency currency) const;
@@ -28,10 +28,8 @@ public:
   };
 
 private:
-  int __cnt; // TODO: удалить нахуй
 
-  double conventional_units;
-  // TODO: общая капитализация
+  double conventional_units, capitalization;
   std::map<Currency, double> currency_amount;
-  std::queue<std::pair<int, double>> deposit;
+
 };

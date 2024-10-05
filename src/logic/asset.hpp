@@ -3,18 +3,15 @@
 
 class Asset {
 public:
-    Asset(double cost, std::string name, double percent);
+    Asset(double cost, double percent);
 
-    double GetBuyRate() const;
-    double GetSellRate() const;
-    std::string GetName() const;
-    double GetPercent() const;
-    // TODO: где девиденты?
+    std::pair<double, double> GetBuyRate() const;
+    std::pair<double, double> GetSellRate() const;
+    double GetDividends() const;
 
-    void Iterate(double rand_num, double spread, double rng_max);
+    void Iterate(double rand_num, double spread);
 
 private:
-    double cost;
-    std::string name;
+    double cost, deltaCost;
     double percent;
 };

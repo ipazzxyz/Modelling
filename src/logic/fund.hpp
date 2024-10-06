@@ -10,13 +10,13 @@ public:
 
   double GetConventionalUnits() const;
   int GetAmount(Currency currency) const;
-  double GetCapitalization(const Market &market) const;
+  double GetCapitalization() const;
 
   void Buy(const Market &market, Currency currency, int amount);
   void Sell(const Market &market, Currency currency, int amount);
   void MakeDeposit(const Market &market, double deposit_money, int month);
 
-  void Iterate(const Market& market);
+  void Iterate(const Market& market, int month, double tax);
 
   class NotEnoughConventionalUnits : public std::exception {
   public:

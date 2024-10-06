@@ -2,8 +2,8 @@
 #include <iostream>
 
 Market::Market(double spread, int cnt_months)
-    : deposit_percent(20), spread(spread), rng(std::time(nullptr)), deposit(cnt_months+1, 0) {
-    currency_exchange_rate[Currency::Hamster].SetAsset(1000, 0.1);
+    : deposit_percent(0.12), spread(spread), rng(std::time(nullptr)), deposit(cnt_months+1, 0) {
+    currency_exchange_rate[Currency::Hamster].SetAsset(1000, 0.9);
     currency_exchange_rate[Currency::Ruble].SetAsset(10, 0);
 }
 
@@ -43,4 +43,11 @@ std::vector<std::pair<std::string, Asset>> Market::GetAllCost() const {
         result.push_back({ToString(currency), asset});
     }
     return result;
+}
+
+double Market::GetDividends(Currency currency) const {
+    if (!currency_exchange_rate.count(currency)) {
+        throw std::out_of_range("нет такого Currency");
+    }
+    return currency_exchange_rate.at(currency).GetDividends();
 }

@@ -12,6 +12,7 @@ public:
 
   std::pair<double, double> GetBuyRate(Currency currency) const;
   std::pair<double, double> GetSellRate(Currency currency) const;
+  double GetDividends(Currency currency) const;
   std::vector<std::pair<std::string, Asset>> GetAllCost() const;
   double GetDepositPercent() const;
 

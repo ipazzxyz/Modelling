@@ -8,7 +8,6 @@ public:
 
   int GetMonthCount() const;
   int GetMonthAmount() const;
-  int GetMonthLeft() const;
 
   double GetConventionalUnits() const;
   double GetCapitalization() const;
@@ -19,8 +18,9 @@ public:
 
   std::vector<std::pair<std::string, Asset>> GetAllCost() const;
 
-  void Buy(Currency currency, double amount);
-  void Sell(Currency currency, double amount);
+  void Buy(Currency currency, int amount);
+  void Sell(Currency currency, int amount);
+  void MakeDeposit(double sumDeposit, int month);
 
   void Iterate();
 

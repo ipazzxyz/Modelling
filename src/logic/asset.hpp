@@ -3,7 +3,7 @@
 
 class Asset {
 public:
-    Asset(double cost, double percent);
+    void SetAsset(double cost, double percent);
 
     std::pair<double, double> GetBuyRate() const;
     std::pair<double, double> GetSellRate() const;

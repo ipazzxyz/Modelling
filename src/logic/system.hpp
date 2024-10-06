@@ -17,6 +17,8 @@ public:
   std::pair<double, double> GetBuyRate(Currency currency) const;
   std::pair<double, double> GetSellRate(Currency currency) const;
 
+  std::vector<std::pair<std::string, Asset>> GetAllCost() const;
+
   void Buy(Currency currency, double amount);
   void Sell(Currency currency, double amount);
 

@@ -4,6 +4,7 @@
 #include "asset.hpp"
 #include <map>
 #include <random>
+#include <ctime>
 
 class Market {
 public:
@@ -11,7 +12,7 @@ public:
 
   std::pair<double, double> GetBuyRate(Currency currency) const;
   std::pair<double, double> GetSellRate(Currency currency) const;
-  const std::vector<std::pair<std::string, const Asset&>>& GetAllCost() const;
+  std::vector<std::pair<std::string, Asset>> GetAllCost() const;
   double GetDepositPercent() const;
 
   void Iterate();

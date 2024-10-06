@@ -1,7 +1,8 @@
 #include "asset.hpp"
-
-Asset::Asset(double cost, double percent)
-    : cost(cost), percent(percent), deltaCost(0) {}
+void Asset::SetAsset(double cost_, double percent_) {
+    cost = cost_;
+    percent = percent_;
+}
 
 std::pair<double, double> Asset::GetBuyRate() const {
     return {cost * 1.1, deltaCost * 1.1};
@@ -17,5 +18,5 @@ double Asset::GetDividends() const {
 
 void Asset::Iterate(double rand_num, double spread) {
     deltaCost = -cost;
-    deltaCost += cost *= spread * rand_num + 1;
+    deltaCost += cost *= 2 * spread * rand_num - spread + 1;
 }

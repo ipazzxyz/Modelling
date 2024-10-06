@@ -6,32 +6,31 @@
 
 class Fund {
 public:
-  Fund(double capitalization);
+  Fund(double capitalization_, int month_amount);
 
   double GetConventionalUnits() const;
-  double GetAmount(Currency currency) const;
+  int GetAmount(Currency currency) const;
   double GetCapitalization(const Market &market) const;
 
-  void Buy(const Market &market, Currency currency, double amount);
-  void Sell(const Market &market, Currency currency, double amount);
-  void MakeDeposit(const Market &market, double amount, int month);
+  void Buy(const Market &market, Currency currency, int amount);
+  void Sell(const Market &market, Currency currency, int amount);
+  void MakeDeposit(const Market &market, double deposit_money, int month);
 
-  void Iterate();
+  void Iterate(const Market& market);
 
   class NotEnoughConventionalUnits : public std::exception {
   public:
     const char *what();
   };
+
   class NotEnoughCurrency : public std::exception {
   public:
     const char *what();
   };
 
 private:
-  int __cnt; // TODO: удалить нахуй
 
-  double conventional_units;
-  // TODO: общая капитализация
-  std::map<Currency, double> currency_amount;
-  std::queue<std::pair<int, double>> deposit;
+  double conventional_units, capitalization, delta_capitalization;
+  std::map<Currency, int> currency_amount;
+  std::vector<double> deposit;
 };

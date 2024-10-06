@@ -14,8 +14,8 @@ public:
   double GetCapitalization() const;
   double GetAmount(Currency currency) const;
 
-  double GetBuyRate(Currency currency) const;
-  double GetSellRate(Currency currency) const;
+  std::pair<double, double> GetBuyRate(Currency currency) const;
+  std::pair<double, double> GetSellRate(Currency currency) const;
 
   void Buy(Currency currency, double amount);
   void Sell(Currency currency, double amount);

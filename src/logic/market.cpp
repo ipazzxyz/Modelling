@@ -23,12 +23,22 @@ void Market::Iterate() {
       currency_exchange_rate.at(static_cast<Currency>(i)).Iterate(static_cast<double>(rng()) /
       static_cast<double>(rng.max()), spread);
   }
-  deposit_percent *= 2 * (static_cast<double>(rng()) / static_cast<double>(rng.max())) *
-          spread - spread + 1;
+
+  deposit_percent *= (static_cast<double>(rng()) / static_cast<double>(rng.max())) *
+          spread / 10 + 1;
+
   if (deposit_percent > 0.17)
       deposit_percent = 0.17;
 }
 
 double Market::GetDepositPercent() const {
     return deposit_percent;
+}
+
+const std::vector<std::pair<std::string, const Asset&>>& Market::GetAllCost() const {
+    std::vector<std::pair<std::string, const Asset&>> result;
+    for (auto [currency, asset] : currency_exchange_rate) {
+        result.push_back({ToString(currency), asset});
+    }
+    return result;
 }

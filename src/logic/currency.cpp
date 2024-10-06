@@ -1,8 +1,7 @@
 #include "currency.hpp"
-
 #include <exception>
 
-inline const char *ToString(Currency currency) {
+ std::string ToString(const Currency &currency) {
   switch (currency) {
   case Currency::Hamster:
     return "Hamster Coin";

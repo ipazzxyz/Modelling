@@ -32,6 +32,7 @@ void Fund::Sell(const Market &market, Currency currency, double amount) {
   conventional_units += GetAmount(currency) * market.GetSellRate(currency).first;
   currency_amount[currency] -= amount;
 }
+
 void Fund::MakeDeposit(const Market &market, double amount, int month) {
   if (GetConventionalUnits() < amount) {
     throw NotEnoughConventionalUnits();

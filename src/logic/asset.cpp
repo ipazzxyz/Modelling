@@ -16,5 +16,6 @@ double Asset::GetDividends() const {
 }
 
 void Asset::Iterate(double rand_num, double spread) {
-    cost *= 2 * spread * rand_num + 1 - spread;
+    deltaCost = -cost;
+    deltaCost += cost *= spread * rand_num + 1;
 }

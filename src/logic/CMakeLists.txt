@@ -8,5 +8,5 @@ qt_add_library(ModellingLogic
     fund.cpp
     market.cpp
     system.cpp
-    currency.cpp)
+    currency.cpp depositors.cpp depositors.hpp)
 target_include_directories(ModellingLogic INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

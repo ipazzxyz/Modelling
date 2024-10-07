@@ -16,13 +16,22 @@ public:
   std::pair<double, double> GetBuyRate(Currency currency) const;
   std::pair<double, double> GetSellRate(Currency currency) const;
 
-  std::vector<std::pair<std::string, Asset>> GetAllCost() const;
+  const std::map<Currency, Asset> &GetAllCost() const;
+  const std::vector<Depositor> &GetAllDepositors() const;
 
   void Buy(Currency currency, int amount);
   void Sell(Currency currency, int amount);
   void MakeDeposit(double sumDeposit, int month);
 
-  void Iterate();
+  void Iterate(double dividend);
+
+  class IterationBeyondTheTimeLimit : public std::exception {
+      const char *what();
+  };
+
+  class UnreachableDeposit : public std::exception {
+    const char * what();
+  };
 
 private:
   int month_amount;

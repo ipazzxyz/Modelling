@@ -47,12 +47,12 @@ void Fund::Sell(const Market &market, Currency currency, int amount) {
     currency_amount[currency] -= amount;
 }
 
-void Fund::MakeDeposit(const Market &market, double deposit_money, int month) {
+void Fund::MakeDeposit(const Market &market, double deposit_money, int month, int duration) {
     if (GetConventionalUnits() < deposit_money) {
         throw NotEnoughConventionalUnitsToMakeDeposit();
     }
     conventional_units -= deposit_money;
-    deposit[month] += deposit_money * (market.GetDepositPercent() + 1.0);
+    deposit[month] += deposit_money * (market.GetDepositPercent() * (1.0 + 15.0 / duration) + 1.0);
 }
 
 void Fund::Iterate(const Market &market, int month, double tax, double dividends) {

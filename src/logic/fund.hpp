@@ -26,7 +26,7 @@ public:
 
     void Sell(const Market &market, Currency currency, int amount);
 
-    void MakeDeposit(const Market &market, double deposit_money, int month);
+    void MakeDeposit(const Market &market, double deposit_money, int month, int duration);
 
     void Iterate(const Market &market, int month, double tax, double dividend);
 

@@ -42,12 +42,12 @@ void System::Sell(Currency currency, int amount) {
     fund.Sell(market, currency, amount);
 }
 
-void System::MakeDeposit(double sumDeposit, int month) {
-    if (month + month_cnt > month_amount) {
+void System::MakeDeposit(double sumDeposit, int duration) {
+    if (duration + month_cnt > month_amount) {
         throw UnreachableDeposit();
     }
 
-    fund.MakeDeposit(market, sumDeposit, month + month_cnt);
+    fund.MakeDeposit(market, sumDeposit, duration + month_cnt, duration);
 }
 
 void System::Iterate(double dividend) {

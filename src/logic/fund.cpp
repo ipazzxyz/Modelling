@@ -1,10 +1,8 @@
 #include "fund.hpp"
-#include <utility>
-#include <iostream>
 
 Fund::Fund(double capitalization, int months_amount)
-    : conventional_units(capitalization), capitalization(0), delta_capitalization(0), deposit(months_amount+1, 0),
-    rng(std::time(nullptr)) {}
+        : conventional_units(capitalization), capitalization(0), delta_capitalization(0), deposit(months_amount + 1, 0),
+          rng(std::time(nullptr)) {}
 
 double Fund::GetConventionalUnits() const {
     return conventional_units;
@@ -41,33 +39,33 @@ void Fund::Buy(const Market &market, Currency currency, int amount) {
 }
 
 void Fund::Sell(const Market &market, Currency currency, int amount) {
-  if (GetAmount(currency) < amount) {
-    throw NotEnoughCurrencyToSell();
-  }
-  capitalization -= amount * market.GetSellRate(currency).first;
-  conventional_units += amount * market.GetSellRate(currency).first;
-  currency_amount[currency] -= amount;
+    if (GetAmount(currency) < amount) {
+        throw NotEnoughCurrencyToSell();
+    }
+    capitalization -= amount * market.GetSellRate(currency).first;
+    conventional_units += amount * market.GetSellRate(currency).first;
+    currency_amount[currency] -= amount;
 }
 
 void Fund::MakeDeposit(const Market &market, double deposit_money, int month) {
-  if (GetConventionalUnits() < deposit_money) {
-    throw NotEnoughConventionalUnitsToMakeDeposit();
-  }
-  conventional_units -= deposit_money;
-  deposit[month] += deposit_money * (market.GetDepositPercent() + 1.0);
+    if (GetConventionalUnits() < deposit_money) {
+        throw NotEnoughConventionalUnitsToMakeDeposit();
+    }
+    conventional_units -= deposit_money;
+    deposit[month] += deposit_money * (market.GetDepositPercent() + 1.0);
 }
 
-void Fund::Iterate(const Market& market, int month, double tax, double dividends) {
+void Fund::Iterate(const Market &market, int month, double tax, double dividends) {
     delta_capitalization = -capitalization;
     capitalization = 0;
 
-    for (auto [currency, amount] : currency_amount) {
+    for (auto [currency, amount]: currency_amount) {
         capitalization += market.GetSellRate(currency).first * amount;
         conventional_units += market.GetDividends(currency) * amount;
     }
 
     std::vector<Depositor> newDepositors;
-    for (auto depositor : depositors) {
+    for (auto depositor: depositors) {
         conventional_units += depositor.Iterate(dividends, GetRandNum(), market.GetSpread());
         if (!depositor.HasLeft()) {
             newDepositors.push_back(depositor);
@@ -104,17 +102,17 @@ std::string Fund::GenSurname() {
 }
 
 const char *Fund::NotEnoughConventionalUnitsToBuy::what() {
-  return "Not enough units to buy.";
+    return "Not enough units to buy.";
 }
 
 const char *Fund::NotEnoughConventionalUnitsToMakeDeposit::what() {
-  return "Not enough units to make deposit.";
+    return "Not enough units to make deposit.";
 }
 
 const char *Fund::NotEnoughCurrencyToSell::what() {
-  return "Not enoughs currency to sell.";
+    return "Not enoughs currency to sell.";
 }
 
 const char *Fund::NotEnoughConventionalUnitsToIterate::what() {
-  return "Not enoughs currency to iterate.";
+    return "Not enoughs currency to iterate.";
 }

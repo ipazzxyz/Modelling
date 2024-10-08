@@ -1,5 +1,3 @@
-#pragma once
-
 #include "depositors.hpp"
 
 double Depositor::GetDeposit() const {
@@ -40,6 +38,5 @@ double Depositor::Iterate(double dividends, double rand_num, double spread) {
 
     if (deposit < 0) deposit = 0;
 
-    return deposit - lastDeposit;
+    return deposit - lastDeposit - dividends;
 }
-

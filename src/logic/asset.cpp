@@ -1,4 +1,5 @@
 #include "asset.hpp"
+
 void Asset::SetAsset(double cost_, double percent_) {
     cost = cost_;
     percent = percent_;

@@ -4,41 +4,48 @@
 
 class System {
 public:
-  System(int month_amount, double capitalization, double tax, double spread);
+    System(int month_amount, double capitalization, double tax, double spread);
 
-  int GetMonthCount() const;
-  int GetMonthAmount() const;
+    int GetMonthCount() const;
 
-  double GetConventionalUnits() const;
-  double GetCapitalization() const;
-  double GetAmount(Currency currency) const;
+    int GetMonthAmount() const;
 
-  std::pair<double, double> GetBuyRate(Currency currency) const;
-  std::pair<double, double> GetSellRate(Currency currency) const;
+    double GetConventionalUnits() const;
 
-  const std::map<Currency, Asset> &GetAllCost() const;
-  const std::vector<Depositor> &GetAllDepositors() const;
+    double GetCapitalization() const;
 
-  void Buy(Currency currency, int amount);
-  void Sell(Currency currency, int amount);
-  void MakeDeposit(double sumDeposit, int month);
+    double GetAmount(Currency currency) const;
 
-  void Iterate(double dividend);
+    std::pair<double, double> GetBuyRate(Currency currency) const;
 
-  class IterationBeyondTheTimeLimit : public std::exception {
-      const char *what();
-  };
+    std::pair<double, double> GetSellRate(Currency currency) const;
 
-  class UnreachableDeposit : public std::exception {
-    const char * what();
-  };
+    const std::map<Currency, Asset> &GetAllCost() const;
+
+    const std::vector<Depositor> &GetAllDepositors() const;
+
+    void Buy(Currency currency, int amount);
+
+    void Sell(Currency currency, int amount);
+
+    void MakeDeposit(double sumDeposit, int month);
+
+    void Iterate(double dividend);
+
+    class IterationBeyondTheTimeLimit : public std::exception {
+        const char *what();
+    };
+
+    class UnreachableDeposit : public std::exception {
+        const char *what();
+    };
 
 private:
-  int month_amount;
-  double tax;
+    int month_amount;
+    double tax;
 
-  Fund fund;
-  Market market;
+    Fund fund;
+    Market market;
 
-  int month_cnt;
+    int month_cnt;
 };

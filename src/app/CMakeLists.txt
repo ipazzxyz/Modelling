@@ -1,8 +1,11 @@
 qt_add_executable(Modelling
     main.cpp
     app.cpp app.hpp
-    setupform.cpp setupform.hpp setupform.ui
     gamewindow.cpp gamewindow.hpp gamewindow.ui
+    setupform.cpp setupform.hpp setupform.ui
+    buyform.cpp buyform.hpp buyform.ui
+    sellform.cpp sellform.hpp sellform.ui
+    depositform.cpp depositform.hpp depositform.ui
 )
 target_link_libraries(Modelling PRIVATE
     ModellingLogic

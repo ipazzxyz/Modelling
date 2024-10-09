@@ -1,27 +1,34 @@
 #pragma once
 
-#include "ui_gamewindow.h"
+#include <system.hpp>
 
-#include "system.hpp"
+#include "ui_gamewindow.h"
 
 class GameWindow : public QMainWindow {
   Q_OBJECT
-  friend class SetupForm;
 
  public:
   GameWindow();
 
+  void RunSetup();
+
+  void Setup(int month, double capitalization, double tax, double spread);
+  void Buy(double amount);
+  void Sell(double amount);
+  void MakeDeposit(int month, double amount);
+
  private slots:
-  void next();
+  void AskBuy();
+  void AskSell();
+  void AskDeposit();
+  void Iterate();
 
  private:
   Ui::GameWindow ui;
-  System *system;
+  System* system;
+  QWidget* form;
 
-  int month_cnt;
-  double capitalization;
-  double tax;
-  double spread;
-
-  void setup();
+  void Update();
+  void UpdateTable();
+  void UpdateText();
 };

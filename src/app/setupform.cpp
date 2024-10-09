@@ -1,15 +1,11 @@
 #include "setupform.hpp"
 
-SetupForm::SetupForm(GameWindow &gamewindow) : gamewindow(gamewindow) {
+SetupForm::SetupForm(GameWindow* gamewindow) : gamewindow(gamewindow) {
   ui.setupUi(this);
-  connect(ui.start, &QPushButton::clicked, this, &SetupForm::start);
+  connect(ui.start, &QPushButton::clicked, this, &SetupForm::Confirm);
 }
-void SetupForm::start() {
-  gamewindow.month_cnt = ui.month->value();
-  gamewindow.capitalization = ui.capitalization->value();
-  gamewindow.tax = ui.tax->value();
-  gamewindow.spread = ui.spread->value();
-  gamewindow.setup();
-  gamewindow.show();
+void SetupForm::Confirm() {
+  gamewindow->Setup(ui.month->value(), ui.capitalization->value(),
+                   ui.tax->value(), ui.spread->value());
   close();
 }

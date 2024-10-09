@@ -3,6 +3,4 @@
 class App {
  public:
   App(int argc, char **argv);
-
- private:
 };

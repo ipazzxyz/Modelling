@@ -1,18 +1,18 @@
 #pragma once
 
 #include "gamewindow.hpp"
-#include "ui_setupform.h"
+#include "ui_depositform.h"
 
-class SetupForm : public QWidget {
+class DepositForm : public QWidget {
   Q_OBJECT
 
  public:
-  SetupForm(GameWindow* gamewindow);
+  DepositForm(GameWindow* gamewindow);
 
  private slots:
   void Confirm();
 
  private:
-  Ui::SetupForm ui;
+  Ui::DepositForm ui;
   GameWindow* gamewindow;
 };

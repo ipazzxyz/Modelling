@@ -16,6 +16,8 @@ public:
 
     double GetAmount(Currency currency) const;
 
+    std::vector<std::pair<int, double>> GetDeposit() const;
+
     std::pair<double, double> GetBuyRate(Currency currency) const;
 
     std::pair<double, double> GetSellRate(Currency currency) const;

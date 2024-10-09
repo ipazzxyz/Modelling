@@ -34,6 +34,10 @@ std::pair<double, double> System::GetSellRate(Currency currency) const {
     return market.GetSellRate(currency);
 }
 
+std::vector<std::pair<int, double>> System::GetDeposit() const {
+    return fund.GetDeposit(month_cnt);
+}
+
 void System::Buy(Currency currency, int amount) {
     fund.Buy(market, currency, amount);
 }

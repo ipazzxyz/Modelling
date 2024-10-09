@@ -20,6 +20,8 @@ public:
 
     const std::vector<Depositor> &GetALlDepositors() const;
 
+    std::vector<std::pair<int, double>> GetDeposit(int month_count) const;
+
     double GetRandNum();
 
     void Buy(const Market &market, Currency currency, int amount);

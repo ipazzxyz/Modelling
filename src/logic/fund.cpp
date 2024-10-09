@@ -23,6 +23,15 @@ const std::vector<Depositor> &Fund::GetALlDepositors() const {
     return depositors;
 }
 
+std::vector<std::pair<int, double>> Fund::GetDeposit(int month_count) const {
+    std::vector<std::pair<int, double>> res;
+    for (int i = month_count + 1; i < deposit.size(); i++)
+        if (deposit[i] != 0)
+            res.push_back({i-month_count, deposit[i]});
+
+    return res;
+}
+
 double Fund::GetRandNum() {
     return static_cast<double>(rng()) / static_cast<double>(rng());
 }

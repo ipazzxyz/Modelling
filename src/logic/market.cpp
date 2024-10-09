@@ -2,8 +2,15 @@
 
 Market::Market(double spread)
     : deposit_percent(0.12), spread(spread), rng(std::time(nullptr)) {
-    currency_exchange_rate[Currency::Hamster].SetAsset(1000, 0.9);
+    currency_exchange_rate[Currency::Hamster].SetAsset(50, 0.00000001);
     currency_exchange_rate[Currency::Ruble].SetAsset(10, 0);
+    currency_exchange_rate[Currency::$TGR].SetAsset(10, 0);
+    currency_exchange_rate[Currency::Gold].SetAsset(500, 0);
+    currency_exchange_rate[Currency::MemCoin].SetAsset(81.5, 0);
+    currency_exchange_rate[Currency::SpaceY].SetAsset(300, 0.2);
+    currency_exchange_rate[Currency::BerBank].SetAsset(200, 0.25);
+    currency_exchange_rate[Currency::DomikVDerevne].SetAsset(1, 0.111);
+    currency_exchange_rate[Currency::PineApple].SetAsset(250, 0.17);
 }
 
 std::pair<double, double> Market::GetBuyRate(Currency currency) const {

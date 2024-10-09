@@ -3,7 +3,7 @@
 #include <string>
 
 enum class Currency {
-    __First, Hamster, Ruble, __Last
+    __First, Hamster, Ruble, $TGR, Gold, MemCoin, SpaceY, BerBank, DomikVDerevne, PineApple, __Last
 };
 
 

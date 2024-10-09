@@ -99,9 +99,11 @@ void Fund::Iterate(const Market &market, int month, double tax, double dividends
         }
     }
 
-    conventional_units -= delta_capitalization * tax;
-    capitalization -= delta_capitalization * tax;
-    delta_capitalization -= delta_capitalization * tax;
+    if (delta_capitalization > 0) {
+        conventional_units -= delta_capitalization * tax;
+        capitalization -= delta_capitalization * tax;
+        delta_capitalization -= delta_capitalization * tax;
+    }
 
     if (conventional_units < 0) {
         throw NotEnoughConventionalUnitsToIterate();

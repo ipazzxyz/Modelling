@@ -1,7 +1,7 @@
 #include "market.hpp"
 
 Market::Market(double spread)
-    : deposit_percent(0.12), spread(spread), rng(std::time(nullptr)) {
+    : deposit_percent(0.07), spread(spread), rng(std::time(nullptr)) {
     currency_exchange_rate[Currency::Hamster].SetAsset(50, 0.00000001);
     currency_exchange_rate[Currency::Ruble].SetAsset(10, 0);
     currency_exchange_rate[Currency::$TGR].SetAsset(10, 0);

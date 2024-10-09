@@ -67,7 +67,7 @@ void Fund::MakeDeposit(const Market &market, double deposit_money, int month, in
     capitalization -= deposit_money;
     delta_capitalization -= deposit_money;
 
-    deposit[month] += deposit_money * (market.GetDepositPercent() * (1.0 + 15.0 / duration) + 1.0);
+    deposit[month] += deposit_money * std::pow(market.GetDepositPercent() + 1, duration);
 }
 
 void Fund::Iterate(const Market &market, int month, double tax, double dividends) {

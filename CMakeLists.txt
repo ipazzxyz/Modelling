@@ -1,12 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
-project(Modelling LANGUAGES CXX VERSION 1.0 DESCRIPTION "Investment portfolio management system")
+project(Modelling LANGUAGES CXX VERSION 1.0 DESCRIPTION "Система управления инвестиционным фондом")
 set(CMAKE_CXX_STANDARD 23)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 qt_standard_project_setup()
-
 add_subdirectory(src/logic)
 add_subdirectory(src/app)

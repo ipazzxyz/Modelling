@@ -5,7 +5,7 @@ DepositForm::DepositForm(GameWindow* gamewindow) : gamewindow(gamewindow) {
   connect(ui.confirm, &QPushButton::clicked, this, &DepositForm::Confirm);
 }
 void DepositForm::Confirm() {
-  gamewindow->MakeDeposit(ui.month->value(),
+  gamewindow->Deposit(ui.month->value(),
                           ui.amount->value());
   close();
 }

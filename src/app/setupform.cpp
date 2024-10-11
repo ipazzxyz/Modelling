@@ -2,7 +2,7 @@
 
 SetupForm::SetupForm(GameWindow* gamewindow) : gamewindow(gamewindow) {
   ui.setupUi(this);
-  connect(ui.start, &QPushButton::clicked, this, &SetupForm::Confirm);
+  connect(ui.confirm, &QPushButton::clicked, this, &SetupForm::Confirm);
 }
 void SetupForm::Confirm() {
   gamewindow->Setup(ui.month->value(), ui.capitalization->value(),

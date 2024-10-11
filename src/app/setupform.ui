@@ -21,7 +21,17 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="_1">
+    <layout class="QHBoxLayout" name="_0">
+     <item>
+      <widget class="QLabel" name="__0">
+       <property name="text">
+        <string>Количество месяцев</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QSpinBox" name="month">
        <property name="alignment">
@@ -35,20 +45,20 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="_1">
      <item>
-      <widget class="QLabel" name="_label1">
+      <widget class="QLabel" name="__1">
        <property name="text">
-        <string>Количество месяцев</string>
+        <string>Изначальная капитализация</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="_2">
      <item>
       <widget class="QDoubleSpinBox" name="capitalization">
        <property name="alignment">
@@ -68,20 +78,20 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="_2">
      <item>
-      <widget class="QLabel" name="_label2">
+      <widget class="QLabel" name="__2">
        <property name="text">
-        <string>Изначальная капитализация</string>
+        <string>%, Налог</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="_3">
      <item>
       <widget class="QDoubleSpinBox" name="tax">
        <property name="alignment">
@@ -95,20 +105,20 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="_3">
      <item>
-      <widget class="QLabel" name="_label3">
+      <widget class="QLabel" name="__3">
        <property name="text">
-        <string>%, Налог</string>
+        <string>%, Разброс</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="_4">
      <item>
       <widget class="QDoubleSpinBox" name="spread">
        <property name="alignment">
@@ -125,20 +135,10 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="_label4">
-       <property name="text">
-        <string>%, Разброс</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="start">
+    <widget class="QPushButton" name="confirm">
      <property name="text">
       <string>Начать игру</string>
      </property>

@@ -7,7 +7,7 @@ App::App(int argc, char **argv) {
 
   GameWindow gamewindow;
   gamewindow.show();
-  gamewindow.RunSetup();
+  gamewindow.OpenSetupForm();
 
   app.exec();
 }

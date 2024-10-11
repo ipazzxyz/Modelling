@@ -17,33 +17,39 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Продать</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QDoubleSpinBox" name="amount">
-     <property name="maximum">
-      <double>1000.000000000000000</double>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="confirm">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>Продать</string>
+        <string>Сколько прлдать</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="cancel">
-       <property name="text">
-        <string>Отмена</string>
+      <widget class="QDoubleSpinBox" name="amount">
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="confirm">
+     <property name="text">
+      <string>Продать</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -6,6 +6,7 @@ qt_add_executable(Modelling
     buyform.cpp buyform.hpp buyform.ui
     sellform.cpp sellform.hpp sellform.ui
     depositform.cpp depositform.hpp depositform.ui
+    iterateform.cpp iterateform.hpp iterateform.ui
 )
 target_link_libraries(Modelling PRIVATE
     ModellingLogic

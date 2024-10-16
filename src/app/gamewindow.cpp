@@ -112,9 +112,11 @@ void GameWindow::UpdateText() {
   if (system) {
     auto deposits = system->GetDeposit();
     QString text(
-        QString("Месяц: %1 / %2\n\nКапитализация: %3$\n\nВаши вклады (%4):\n")
+        QString(
+            "Месяц: %1 / %2\n\nКапитализация: %4$ (%3)\n\nВаши вклады (%5):\n")
             .arg(QString::number(system->GetMonthCount()),
                  QString::number(system->GetMonthAmount()),
+                 QString::number(system->GetDeltaCapitalization()),
                  QString::number(system->GetCapitalization()),
                  QString::number(deposits.size())));
     for (int i = 0; i < deposits.size(); ++i) {
@@ -127,7 +129,7 @@ void GameWindow::UpdateText() {
     for (auto depositor : depositors) {
       text.append(QString::fromStdString(depositor.GetFullName().first + " " +
                                          depositor.GetFullName().second) +
-                  " " + QString::number(depositor.GetDeposit()) + "\n");
+                  " " + QString::number(depositor.GetDeposit()) + "$\n");
     }
     ui.textBrowser->setText(text);
   }

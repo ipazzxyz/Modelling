@@ -104,7 +104,7 @@ void GameWindow::OpenIterateForm() {
 void GameWindow::Iterate(double amount) {
   try {
     system->Iterate(amount);
-  } catch (System::IterationBeyondTheTimeLimit&) {
+  } catch (System::IterationReachLimit&) {
     Alert("Игра окончена, итоговая капиталиация: " +
           QString::number(system->GetCapitalization()) + "$.");
   } catch (std::exception& exception) {
@@ -149,9 +149,8 @@ void GameWindow::UpdateText() {
     text.append(QString("\nВкладчики (%1): \n")
                     .arg(QString::number(depositors.size())));
     for (auto depositor : depositors) {
-      text.append(QString::fromStdString(depositor.GetFullName().first + " " +
-                                         depositor.GetFullName().second) +
-                  " " + QString::number(depositor.GetDeposit()) + "$\n");
+      text.append(QString::fromStdString(depositor.GetFullName()) + " " +
+                  QString::number(depositor.GetDeposit()) + "$\n");
     }
     ui.textBrowser->setText(text);
   }

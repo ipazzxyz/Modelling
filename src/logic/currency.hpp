@@ -2,7 +2,7 @@
 #include <exception>
 #include <string>
 
-const int CurrencySize = 9; // Do not count __First & __Last
+const int CurrencySize = 9;  // Do not count __First & __Last
 
 enum class Currency {
   __First,
@@ -16,6 +16,7 @@ enum class Currency {
   DomikVDerevne,
   PineApple,
   __Last
-};
+};  // TODO: working with this approach in frontend sucks, looking for a better
+    // solution
 
 std::string ToString(const Currency &currency);

@@ -87,7 +87,16 @@ void Fund::Iterate(const Market &market, int month, double tax,
     conventional_units += market.GetDividends(currency) * amount;
   }
 
+  double out_come = 0;
+  for (auto& depositor : depositors)
+      out_come += depositor.GetDeposit();
+
+  out_come *= dividends / 100;
+  if (out_come > conventional_units)
+      throw NotEnoughConventionalUnitsToIterate();
+
   std::vector<Depositor> newDepositors;
+
   for (auto& depositor : depositors) {
     conventional_units +=
         depositor.Iterate(dividends, GetRandNum(), market.GetSpread());
@@ -125,7 +134,8 @@ void Fund::Iterate(const Market &market, int month, double tax,
   }
 
   if (conventional_units < 0) {
-    throw NotEnoughConventionalUnitsToIterate();
+      conventional_units = 0;
+      throw NotEnoughConventionalUnitsToIterate();
   }
 }
 

@@ -8,6 +8,7 @@ class DepositForm : public QWidget {
 
  public:
   DepositForm(GameWindow* gamewindow);
+    DepositForm(double max, GameWindow* gamewindow);
 
  private slots:
   void Confirm();

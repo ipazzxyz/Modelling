@@ -8,6 +8,7 @@ class SellForm : public QWidget {
 
  public:
   SellForm(GameWindow* gamewindow);
+  SellForm(QString str, double max, GameWindow* gamewindow);
 
  private slots:
   void Confirm();

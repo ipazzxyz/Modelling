@@ -1,7 +1,6 @@
 #include "gamewindow.hpp"
 
 #include <currency.hpp>
-#include <iostream>
 
 #include "buyform.hpp"
 #include "depositform.hpp"
@@ -31,7 +30,6 @@ void GameWindow::Buy(double amount) {
     Update();
   } catch (std::exception& exception) {
     Alert(QString::fromUtf8(exception.what()));
-    std::cout << exception.what() << std::endl;
   }
 }
 void GameWindow::Sell(double amount) {
@@ -57,7 +55,15 @@ void GameWindow::OpenBuyForm() {
     return;
   }
   delete form;
-  form = new BuyForm(this);
+  form = new BuyForm(
+      QString::fromStdString(ToString(
+          Currency(ui.table->selectionModel()->selectedRows()[0].row()))),
+      system->GetConventionalUnits() /
+          system
+              ->GetBuyRate(
+                  Currency(ui.table->selectionModel()->selectedRows()[0].row()))
+              .first,
+      this);
   form->show();
 }
 void GameWindow::OpenSellForm() {
@@ -66,12 +72,17 @@ void GameWindow::OpenSellForm() {
     return;
   }
   delete form;
-  form = new SellForm(this);
+  form = new SellForm(
+      QString::fromStdString(ToString(
+          Currency(ui.table->selectionModel()->selectedRows()[0].row()))),
+      system->GetAmount(
+          Currency(ui.table->selectionModel()->selectedRows()[0].row())),
+      this);
   form->show();
 }
 void GameWindow::OpenDepositForm() {
   delete form;
-  form = new DepositForm(this);
+  form = new DepositForm(system->GetConventionalUnits(), this);
   form->show();
 }
 void GameWindow::OpenIterateForm() {

@@ -8,6 +8,7 @@ class BuyForm : public QWidget {
 
  public:
   BuyForm(GameWindow* gamewindow);
+  BuyForm(QString str, double max, GameWindow* gamewindow);
 
  private slots:
   void Confirm();

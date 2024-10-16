@@ -65,10 +65,16 @@ void GameWindow::OpenDepositForm() {
   form->show();
 }
 void GameWindow::OpenIterateForm() {
-  delete form;
   if (system->GetAllDepositors().size() == 0) {
-    system->Iterate(0);
+    try {
+      system->Iterate(0);
+      Update();
+    } catch (std::exception&) {
+      Alert("Игра окончена, итоговая капиталиация: " +
+            QString::number(system->GetCapitalization()) + "$.");
+    }
   } else {
+    delete form;
     form = new IterateForm(this);
     form->show();
   }
@@ -104,12 +110,13 @@ void GameWindow::UpdateTable() {
 }
 void GameWindow::UpdateText() {
   if (system) {
+    auto deposits = system->GetDeposit();
     QString text(
-        QString("Месяц: %1 / %2\n\nКапитализация: %3$\n\nВаши вклады:\n")
+        QString("Месяц: %1 / %2\n\nКапитализация: %3$\n\nВаши вклады (%4):\n")
             .arg(QString::number(system->GetMonthCount()),
                  QString::number(system->GetMonthAmount()),
-                 QString::number(system->GetCapitalization())));
-    auto deposits = system->GetDeposit();
+                 QString::number(system->GetCapitalization()),
+                 QString::number(deposits.size())));
     for (int i = 0; i < deposits.size(); ++i) {
       text.append(QString::number(deposits[i].second) + "$ начислится через " +
                   QString::number(deposits[i].first) + " мес.\n");

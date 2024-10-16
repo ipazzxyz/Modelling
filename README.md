@@ -23,7 +23,7 @@
 ## Документация
 
 1. [Документация к backend](doc/documentation.md)
-2. [Иерархия backend](doc/hierarchy_of_backend.png)
+2. [Иерархия backend](doc/hierarchy_of_backend.md)
 
 ## Команда
 

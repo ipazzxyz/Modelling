@@ -1,7 +1,6 @@
 #include "gamewindow.hpp"
 
 #include <currency.hpp>
-#include <iostream>
 
 #include "buyform.hpp"
 #include "depositform.hpp"
@@ -30,7 +29,7 @@ void GameWindow::Buy(double amount) {
                 amount);
     Update();
   } catch (std::exception& exception) {
-    exception.what();
+    Alert(exception.what());
   }
 }
 void GameWindow::Sell(double amount) {
@@ -39,7 +38,7 @@ void GameWindow::Sell(double amount) {
                  amount);
     Update();
   } catch (std::exception& exception) {
-    exception.what();
+    Alert(exception.what());
   }
 }
 void GameWindow::Deposit(int month, double amount) {
@@ -47,7 +46,7 @@ void GameWindow::Deposit(int month, double amount) {
     system->MakeDeposit(amount, month);
     Update();
   } catch (std::exception& exception) {
-    std::cout << exception.what();
+    Alert(exception.what());
   }
 }
 void GameWindow::OpenBuyForm() {
@@ -67,15 +66,21 @@ void GameWindow::OpenDepositForm() {
 }
 void GameWindow::OpenIterateForm() {
   delete form;
-  form = new IterateForm(this);
+  if (system->GetAllDepositors().size() == 0) {
+    system->Iterate(0);
+  } else {
+    form = new IterateForm(this);
+  }
   form->show();
 }
 void GameWindow::Iterate(double amount) {
   try {
     system->Iterate(amount);
-  } catch (std::exception&) {
+  } catch (System::IterationBeyondTheTimeLimit&) {
     Alert("Игра окончена, итоговая капиталиация: " +
           QString::number(system->GetCapitalization()) + "$.");
+  } catch (std::exception& exception) {
+    Alert(exception.what());
   }
   Update();
 }
@@ -107,14 +112,15 @@ void GameWindow::UpdateText() {
     auto deposits = system->GetDeposit();
     for (int i = 0; i < deposits.size(); ++i) {
       text.append(QString::number(deposits[i].second) + "$ начислится через " +
-                 QString::number(deposits[i].first) + " мес.\n");
+                  QString::number(deposits[i].first) + " мес.\n");
     }
     auto depositors = system->GetAllDepositors();
-    text.append("\nВкладчики:\n");
-    for (int i = 0; i < deposits.size(); ++i) {
-      text.append(QString::fromStdString(depositors[i].GetFullName().first + " " +
-                                        depositors[i].GetFullName().second) +
-                 " " + QString::number(depositors[i].GetDeposit()) + "\n");
+    text.append(QString("\nВкладчики (%1): \n")
+                    .arg(QString::number(depositors.size())));
+    for (auto depositor : depositors) {
+      text.append(QString::fromStdString(depositor.GetFullName().first + " " +
+                                         depositor.GetFullName().second) +
+                  " " + QString::number(depositor.GetDeposit()) + "\n");
     }
     ui.textBrowser->setText(text);
   }

@@ -1,6 +1,7 @@
 #include "gamewindow.hpp"
 
 #include <currency.hpp>
+#include <iostream>
 
 #include "buyform.hpp"
 #include "depositform.hpp"
@@ -29,7 +30,8 @@ void GameWindow::Buy(double amount) {
                 amount);
     Update();
   } catch (std::exception& exception) {
-    Alert(exception.what());
+    Alert(QString::fromUtf8(exception.what()));
+    std::cout << exception.what() << std::endl;
   }
 }
 void GameWindow::Sell(double amount) {
@@ -50,11 +52,19 @@ void GameWindow::Deposit(int month, double amount) {
   }
 }
 void GameWindow::OpenBuyForm() {
+  if (ui.table->selectedItems().size() == 0) {
+    Alert("Вы не выбрали, что хотите купить.");
+    return;
+  }
   delete form;
   form = new BuyForm(this);
   form->show();
 }
 void GameWindow::OpenSellForm() {
+  if (ui.table->selectedItems().size() == 0) {
+    Alert("Вы не выбрали, что хотите продать.");
+    return;
+  }
   delete form;
   form = new SellForm(this);
   form->show();

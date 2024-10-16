@@ -14,6 +14,8 @@ public:
 
     double GetCapitalization() const;
 
+    double GetDeltaCapitalization() const;
+
     double GetAmount(Currency currency) const;
 
     std::vector<std::pair<int, double>> GetDeposit() const;

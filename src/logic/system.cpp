@@ -18,6 +18,10 @@ double System::GetCapitalization() const {
     return fund.GetCapitalization();
 }
 
+double System::GetDeltaCapitalization() const {
+    return fund.GetDeltaCapitalization();
+}
+
 double System::GetConventionalUnits() const {
     return fund.GetConventionalUnits();
 }
@@ -70,7 +74,7 @@ const std::map<Currency, Asset> &System::GetAllCost() const {
 }
 
 const std::vector<Depositor> &System::GetAllDepositors() const {
-    return fund.GetALlDepositors();
+    return fund.GetAllDepositors();
 }
 
 const char *System::IterationBeyondTheTimeLimit::what() {

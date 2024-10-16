@@ -15,7 +15,7 @@ GameWindow::GameWindow() : form(new SetupForm(this)) {
   connect(ui.iterate, &QPushButton::clicked, this,
           &GameWindow::OpenIterateForm);
   connect(ui.deposit, &QPushButton::clicked, this,
-          &GameWindow::OpenIterateForm);
+          &GameWindow::OpenDepositForm);
 }
 void GameWindow::OpenSetupForm() { form->show(); }
 void GameWindow::Setup(int month, double capitalization, double tax,

@@ -42,7 +42,7 @@ double Fund::GetRandNum() {
 }
 
 
-void Fund::Buy(const Market &market, Currency currency, int amount) {
+void Fund::Buy(const Market &market, Currency currency, double amount) {
     double price = amount * market.GetBuyRate(currency).first;
 
     if (conventional_units < price) {
@@ -56,7 +56,7 @@ void Fund::Buy(const Market &market, Currency currency, int amount) {
     currency_amount[currency] += amount;
 }
 
-void Fund::Sell(const Market &market, Currency currency, int amount) {
+void Fund::Sell(const Market &market, Currency currency, double amount) {
     if (GetAmount(currency) < amount) {
         throw NotEnoughCurrencyToSell();
     }

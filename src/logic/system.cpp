@@ -42,11 +42,11 @@ std::vector<std::pair<int, double>> System::GetDeposit() const {
     return fund.GetDeposit(month_cnt);
 }
 
-void System::Buy(Currency currency, int amount) {
+void System::Buy(Currency currency, double amount) {
     fund.Buy(market, currency, amount);
 }
 
-void System::Sell(Currency currency, int amount) {
+void System::Sell(Currency currency, double amount) {
     fund.Sell(market, currency, amount);
 }
 

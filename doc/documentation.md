@@ -37,8 +37,26 @@ Fund System::GetFund();
 ### Получение цены покупки / продажи
 
 ```C++
-double Market::GetBuyPrice(Currency валюта);
-double Market::GetSellPrice(Currency валюта);
+double Market::GetBuyPrice(Currency название);
+double Market::GetSellPrice(Currency название);
+```
+
+### Получение процента по депозиту в банке
+
+```C++
+double GetDepositPercent();
+```
+
+### Получение map
+
+```C++
+double GetDividends(Currency название);
+```
+
+### Получение количество дивидендов за единицу валюты 
+
+```C++
+double GetDividends(Currency название);
 ```
 
 ## Класс фонда. class Fund
@@ -54,7 +72,7 @@ double Fund::GetConventionalUnits();
 ### Получение кол-ва валюты
 
 ```C++
-double Fund::GetAmount(Currency валюта);
+double Fund::GetAmount(Currency название);
 ```
 
 ### Получение капитализации
@@ -62,6 +80,20 @@ double Fund::GetAmount(Currency валюта);
 ```C++
 double Fund::GetCapitalization(Market &market);
 ```
+
+### Получение списка вкладчиков
+
+```C++
+vector<Depositor> &GetALlDepositors();
+```
+
+### Покупка / продажа
+
+```C++
+void Buy(const Market &market, Currency currency, int amount);  
+void Sell(const Market &market, Currency currency, int amount);
+```
+
 
 # Логика
 
@@ -71,4 +103,4 @@ double Fund::GetCapitalization(Market &market);
 
 ## Остальные валюты
 
-Наименования остальных валют лежат в enum class Currency (currency.hpp). Работа с ними происходит через интерфейсы классов, описанных выше.
+Наименования остальных валют лежат в enum class Currency, а логика в Asset. Работа с ними происходит через интерфейсы классов, описанных выше.

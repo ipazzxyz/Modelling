@@ -28,9 +28,9 @@ public:
 
     const std::vector<Depositor> &GetAllDepositors() const;
 
-    void Buy(Currency currency, int amount);
+    void Buy(Currency currency, double amount);
 
-    void Sell(Currency currency, int amount);
+    void Sell(Currency currency, double amount);
 
     void MakeDeposit(double sumDeposit, int month);
 

@@ -26,9 +26,9 @@ public:
 
     double GetRandNum();
 
-    void Buy(const Market &market, Currency currency, int amount);
+    void Buy(const Market &market, Currency currency, double amount);
 
-    void Sell(const Market &market, Currency currency, int amount);
+    void Sell(const Market &market, Currency currency, double amount);
 
     void MakeDeposit(const Market &market, double deposit_money, int month, int duration);
 

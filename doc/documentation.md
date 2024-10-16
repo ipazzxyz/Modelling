@@ -104,3 +104,15 @@ void Sell(const Market &market, Currency currency, int amount);
 ## Остальные валюты
 
 Наименования остальных валют лежат в enum class Currency, а логика в Asset. Работа с ними происходит через интерфейсы классов, описанных выше.
+
+# Иерархия классов
+
+```mermaid
+  graph TD;
+      System---Fund;
+      System---Market;
+      Fund---Depositor;
+      Fund---Currency;
+      Market---Currency
+      Market---Asset
+```

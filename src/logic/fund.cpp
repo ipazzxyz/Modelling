@@ -6,14 +6,14 @@ Fund::Fund(double capitalization, int months_amount)
       delta_capitalization(0),
       deposit(months_amount + 1, 0),
       rng(std::time(nullptr)),
-      names{"Egor",    "Konstantin", "Damir", "Maksim", "Nikita",
-            "Leonard", "Fedor",      "Polin", "Arsen",  "Mikhail"},
+      names{"Егор",    "Konstantin", "Damir", "Maksim", "Nikita",
+            "Leonard", "Федор",      "Polin", "Arsen",  "Mikhail"},
       surnames{"Osipov", "Yusupov", "Tursunov", "Alimov", "Saidov",
-               "Alimov", "Yunusov", "Trifonov", "Kan",    "Ivanov"} {}
+               "Alimov", "Yunusov", "ТрифонОв", "Kan",    "Ivanov"} {}
 
 double Fund::GetConventionalUnits() const { return conventional_units; }
 
-int Fund::GetAmount(Currency currency) const {
+double Fund::GetAmount(Currency currency) const {
   if (!currency_amount.count(currency)) {
     return 0;
   }
@@ -88,7 +88,7 @@ void Fund::Iterate(const Market &market, int month, double tax,
   }
 
   std::vector<Depositor> newDepositors;
-  for (auto depositor : depositors) {
+  for (auto& depositor : depositors) {
     conventional_units +=
         depositor.Iterate(dividends, GetRandNum(), market.GetSpread());
     if (!depositor.HasLeft()) {
@@ -104,7 +104,7 @@ void Fund::Iterate(const Market &market, int month, double tax,
 
   if (delta_capitalization > 0) {
     int cntNewDepositors =
-        delta_capitalization * 10 / capitalization * GetRandNum();
+        delta_capitalization * 88.0 / capitalization * GetRandNum();
     for (int i = 0; i < cntNewDepositors; i++) {
       Depositor newDepositor;
       double depositor_money =

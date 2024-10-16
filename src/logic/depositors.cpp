@@ -28,15 +28,16 @@ double Depositor::Iterate(double dividends, double rand_num, double spread) {
     double lastDeposit = deposit;
 
     if (dividends > desired_dividends) {
-        deposit += dividends * rand_num + deposit * spread * rand_num + deposit * rand_num * (dividends - desired_dividends) / desired_dividends;
+        deposit += 2 * desired_dividends * rand_num * spread - spread * desired_dividends * 0.7;
     }
     else {
-        deposit += dividends * (rand_num - spread) - dividends;
+        deposit -=  rand_num * (desired_dividends - dividends) + deposit * rand_num;
     }
 
-    desired_dividends = (deposit / 12) * rand_num;
+    if (deposit < 1) deposit = 0;
 
-    if (deposit < 0) deposit = 0;
+    desired_dividends = (deposit / 12) * (rand_num + 0.2);
+
 
     return deposit - lastDeposit - dividends;
 }

@@ -15,6 +15,6 @@ public:
     void Iterate(double rand_num, double spread);
 
 private:
-    double cost, deltaCost;
+    double cost, delta_cost;
     double percent;
 };

@@ -6,11 +6,11 @@ void Asset::SetAsset(double cost_, double percent_) {
 }
 
 std::pair<double, double> Asset::GetBuyRate() const {
-    return {cost * 1.1, deltaCost * 1.1};
+    return {cost * 1.1, delta_cost * 1.1};
 }
 
 std::pair<double, double> Asset::GetSellRate() const {
-    return {cost, deltaCost};
+    return {cost, delta_cost};
 }
 
 double Asset::GetDividends() const {
@@ -18,6 +18,6 @@ double Asset::GetDividends() const {
 }
 
 void Asset::Iterate(double rand_num, double spread) {
-    deltaCost = -cost;
-    deltaCost += cost *= 2 * spread * rand_num - spread + 1;
+    delta_cost = -cost;
+    delta_cost += cost *= 2 * spread * rand_num - spread + 1;
 }

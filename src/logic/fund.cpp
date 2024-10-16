@@ -2,7 +2,8 @@
 
 Fund::Fund(double capitalization, int months_amount)
         : conventional_units(capitalization), capitalization(capitalization), delta_capitalization(0), deposit(months_amount + 1, 0),
-          rng(std::time(nullptr)) {}
+          rng(std::time(nullptr)), names{"Egor", "Konstantin", "Damir", "Maksim", "Nikita", "Leonard", "Fedor", "Polina", "Arsen", "Mikhail"},
+          surnames{"Osipov", "Yusupov", "Tursunov", "Alimova", "Saidov", "Alimov", "Yunusova", "Trifonov", "Kan", "Ivanova"} {}
 
 double Fund::GetConventionalUnits() const {
     return conventional_units;
@@ -33,7 +34,7 @@ std::vector<std::pair<int, double>> Fund::GetDeposit(int month_count) const {
 }
 
 double Fund::GetRandNum() {
-    return static_cast<double>(rng()) / static_cast<double>(rng());
+    return static_cast<double>(rng()) / static_cast<double>(rng.max());
 }
 
 
@@ -121,11 +122,13 @@ void Fund::Iterate(const Market &market, int month, double tax, double dividends
 }
 
 std::string Fund::GenName() {
-    return "Egor";
+    int k = rng() % names.size();
+    return names[k];
 }
 
 std::string Fund::GenSurname() {
-    return "Trifonov";
+    int k = rng() % surnames.size();
+    return surnames[k];
 }
 
 const char *Fund::NotEnoughConventionalUnitsToBuy::what() {

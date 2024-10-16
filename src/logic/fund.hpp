@@ -61,5 +61,6 @@ private:
     std::map<Currency, int> currency_amount;
     std::vector<double> deposit;
     std::vector<Depositor> depositors;
+    std::vector<std::string> names, surnames;
     std::mt19937 rng;
 };

@@ -15,7 +15,7 @@ class Fund {
 
   double GetConventionalUnits() const;
 
-  int GetAmount(Currency currency) const;
+  double GetAmount(Currency currency) const;
 
   double GetCapitalization() const;
 
@@ -62,7 +62,7 @@ class Fund {
   std::string GenSurname();
 
   double conventional_units, capitalization, delta_capitalization;
-  std::map<Currency, int> currency_amount;
+  std::map<Currency, double> currency_amount;
   std::vector<double> deposit;
   std::vector<Depositor> depositors;
   std::vector<std::string> names, surnames;

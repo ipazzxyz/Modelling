@@ -1,5 +1,6 @@
 #include "gamewindow.hpp"
 
+#include <cmath>
 #include <currency.hpp>
 
 #include "buyform.hpp"
@@ -58,11 +59,11 @@ void GameWindow::OpenBuyForm() {
   form = new BuyForm(
       QString::fromStdString(ToString(
           Currency(ui.table->selectionModel()->selectedRows()[0].row()))),
-      system->GetConventionalUnits() /
-          system
-              ->GetBuyRate(
-                  Currency(ui.table->selectionModel()->selectedRows()[0].row()))
-              .first,
+      std::floor(system->GetConventionalUnits() /
+                 system
+                     ->GetBuyRate(Currency(
+                         ui.table->selectionModel()->selectedRows()[0].row()))
+                     .first),
       this);
   form->show();
 }
@@ -124,8 +125,8 @@ void GameWindow::UpdateTable() {
     SetTableItemText(i, 0, QString::fromStdString(ToString(Currency(i))));
     SetTableItemText(
         i, 1,
-        QString::number(system->GetSellRate(Currency(i)).first) + " / " +
-            QString::number(system->GetBuyRate(Currency(i)).first));
+        QString::number(system->GetBuyRate(Currency(i)).first) + " / " +
+            QString::number(system->GetSellRate(Currency(i)).first));
     SetTableItemText(i, 2, QString::number(system->GetAmount(Currency(i))));
   }
 }

@@ -70,8 +70,8 @@ void GameWindow::OpenIterateForm() {
     system->Iterate(0);
   } else {
     form = new IterateForm(this);
+    form->show();
   }
-  form->show();
 }
 void GameWindow::Iterate(double amount) {
   try {

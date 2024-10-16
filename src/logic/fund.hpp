@@ -1,68 +1,70 @@
 #pragma once
 
-#include "market.hpp"
-#include "depositors.hpp"
-#include <queue>
-#include <list>
-#include <random>
 #include <ctime>
+#include <list>
+#include <queue>
+#include <random>
 #include <utility>
 
+#include "depositors.hpp"
+#include "market.hpp"
+
 class Fund {
-public:
-    Fund(double capitalization_, int month_amount);
+ public:
+  Fund(double capitalization_, int month_amount);
 
-    double GetConventionalUnits() const;
+  double GetConventionalUnits() const;
 
-    int GetAmount(Currency currency) const;
+  int GetAmount(Currency currency) const;
 
-    double GetCapitalization() const;
+  double GetCapitalization() const;
 
-    double GetDeltaCapitalization() const;
+  double GetDeltaCapitalization() const;
 
-    const std::vector<Depositor> &GetAllDepositors() const;
+  const std::vector<Depositor> &GetAllDepositors() const;
 
-    std::vector<std::pair<int, double>> GetDeposit(int month_count) const;
+  std::vector<std::pair<int, double>> GetDeposit(int month_count) const;
 
-    double GetRandNum();
+  double GetRandNum();
 
-    void Buy(const Market &market, Currency currency, double amount);
+  void Buy(const Market &market, Currency currency, double amount);
 
-    void Sell(const Market &market, Currency currency, double amount);
+  void Sell(const Market &market, Currency currency, double amount);
 
-    void MakeDeposit(const Market &market, double deposit_money, int month, int duration);
+  void MakeDeposit(const Market &market, double deposit_money, int month,
+                   int duration);
 
-    void Iterate(const Market &market, int month, double tax, double dividend);
+  void Iterate(const Market &market, int month, double tax, double dividend);
 
-    class NotEnoughConventionalUnitsToBuy : public std::exception {
-    public:
-        const char *what();
-    };
+  class NotEnoughConventionalUnitsToBuy : public std::exception {
+   public:
+    const char *what() const noexcept;
+  };
 
-    class NotEnoughConventionalUnitsToMakeDeposit : public std::exception {
-    public:
-        const char *what();
-    };
+  class NotEnoughConventionalUnitsToMakeDeposit : public std::exception {
+   public:
+    const char *what() const noexcept;
+  };
 
-    class NotEnoughCurrencyToSell : public std::exception {
-    public:
-        const char *what();
-    };
+  class NotEnoughCurrencyToSell : public std::exception {
+   public:
+    const char *what() const noexcept;
+  };
 
-    class NotEnoughConventionalUnitsToIterate : public std::exception {
-    public:
-        const char *what();
-    };
+  class NotEnoughConventionalUnitsToIterate : public std::exception {
+   public:
+    const char *what() const noexcept;
+  };
 
-private:
-    std::string GenName();
+ private:
+  std::string GenName();
 
-    std::string GenSurname();
+  std::string GenSurname();
 
-    double conventional_units, capitalization, delta_capitalization;
-    std::map<Currency, int> currency_amount;
-    std::vector<double> deposit;
-    std::vector<Depositor> depositors;
-    std::vector<std::string> names, surnames;
-    std::mt19937 rng;
+  double conventional_units, capitalization, delta_capitalization;
+  std::map<Currency, int> currency_amount;
+  std::vector<double> deposit;
+  std::vector<Depositor> depositors;
+  std::vector<std::string> names, surnames;
+  std::mt19937 rng;
 };

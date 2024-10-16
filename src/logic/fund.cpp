@@ -39,13 +39,14 @@ double Fund::GetRandNum() {
 
 void Fund::Buy(const Market &market, Currency currency, int amount) {
     double price = amount * market.GetBuyRate(currency).first;
+
     if (conventional_units < price) {
         throw NotEnoughConventionalUnitsToBuy();
     }
     conventional_units -= price;
 
-    capitalization += market.GetSellRate(currency).first - price;
-    delta_capitalization += market.GetSellRate(currency).first - price;
+    capitalization += market.GetSellRate(currency).first * amount - price;
+    delta_capitalization += market.GetSellRate(currency).first * amount - price;
 
     currency_amount[currency] += amount;
 }

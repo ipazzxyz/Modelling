@@ -19,12 +19,12 @@
 
 1. [Практикум "Моделированние" общая постановка задачи](doc/globaltask.md)
 2. [Система управления инвестиционным портфелем](doc/specifictask.md)
-3. [Краткая характеристика пользовательского интерфейса](doc/user_interface_doc.md)
 
 ## Документация
 
 1. [Документация к backend](doc/documentation.md)
 2. [Иерархия backend](doc/hierarchy_of_backend.md)
+3. [Краткая характеристика пользовательского интерфейса](doc/user_interface_doc.md)
 
 ## Команда
 

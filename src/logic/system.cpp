@@ -24,6 +24,14 @@ const std::vector<Depositor> &System::GetAllYourDepositors() const {
     return fund.GetDepositors();
 }
 
+double System::GetConventionalUnits() const {
+    return fund.GetConventionalUnits();
+}
+
+double System::GetCapitalization() const {
+    return fund.GetCapitalization();
+}
+
 int System::GetStockAmount(Currency currency) const {
     return fund.GetStockAmount(currency);
 }

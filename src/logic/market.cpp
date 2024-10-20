@@ -1,66 +1,125 @@
 #include "market.hpp"
 
-Market::Market(double spread)
-    : deposit_percent(0.07), spread(spread), rng(std::time(nullptr)) {
-    currency_exchange_rate[Currency::Hamster].SetAsset(50, 0.00000001);
-    currency_exchange_rate[Currency::Ruble].SetAsset(10, 0);
-    currency_exchange_rate[Currency::$TGR].SetAsset(10, 0);
-    currency_exchange_rate[Currency::Gold].SetAsset(500, 0);
-    currency_exchange_rate[Currency::MemCoin].SetAsset(81.5, 0);
-    currency_exchange_rate[Currency::SpaceY].SetAsset(300, 0.2);
-    currency_exchange_rate[Currency::BerBank].SetAsset(200, 0.25);
-    currency_exchange_rate[Currency::DomikVDerevne].SetAsset(1, 0.111);
-    currency_exchange_rate[Currency::PineApple].SetAsset(250, 0.17);
+Market::Market(): rng(std::time(0)) {
+    bonds.insert({Currency::DomikVDerevne, Bond(100, 100, 0.1, 4, 12)});
+    bonds.insert({Currency::SpaceY, Bond(123, 123, 0.1, 4, 12)});
+    stocks.insert({Currency::BerBank, Stock(123, 4)});
+    stocks.insert({Currency::PineApple, Stock(200, 6)});
+    assets.insert({Currency::Ruble, Asset(12)});
+    assets.insert({Currency::$TGR, Asset(32)});
 }
 
-std::pair<double, double> Market::GetBuyRate(Currency currency) const {
-    if (!currency_exchange_rate.count(currency)) {
-        throw DoesNotExistCurrency();
-    }
-    return currency_exchange_rate.at(currency).GetBuyRate();
+const std::map<Currency, Bond> &Market::GetAllBonds() const {
+    return bonds;
 }
 
-std::pair<double, double> Market::GetSellRate(Currency currency) const {
-    if (!currency_exchange_rate.count(currency)) {
-        throw DoesNotExistCurrency();
-    }
-    return currency_exchange_rate.at(currency).GetSellRate();
+const std::map<Currency, Stock> &Market::GetAllStocks() const {
+    return stocks;
 }
 
-double Market::GetDepositPercent() const {
-    return deposit_percent;
+const std::map<Currency, Asset> &Market::GetAllAssets() const {
+    return assets;
 }
 
-const std::map<Currency, Asset> &Market::GetAllCost() const {
-    return currency_exchange_rate;
+const Bond &Market::GetBond(Currency currency) const {
+    if (!bonds.count(currency))
+        throw std::out_of_range("");
+    return bonds.at(currency);
 }
 
-double Market::GetDividends(Currency currency) const {
-    if (!currency_exchange_rate.count(currency)) {
-        throw DoesNotExistCurrency();
-    }
-    return currency_exchange_rate.at(currency).GetDividends();
+double Market::GetBuyRateBond(Currency currency) const {
+    if (!bonds.count(currency))
+        throw std::out_of_range("");
+    return bonds.at(currency).GetBuyRate();
 }
 
-double Market::GetSpread() const {
-    return spread;
+const std::vector<std::pair<int, double>>& Market::GetGraphBond(Currency currency) const {
+    if (!bonds.count(currency))
+        throw std::out_of_range("");
+    return bonds.at(currency).GetGraph();
+}
+
+double Market::GetTrueCostBond(Currency currency) const {
+    if (!bonds.count(currency))
+        throw std::out_of_range("");
+    return bonds.at(currency).GetTrueCost();
+}
+
+double Market::GetPercentBond(Currency currency) const {
+    if (!bonds.count(currency))
+        throw std::out_of_range("");
+    return bonds.at(currency).GetPercent();
+}
+
+int Market::GetPeriod(Currency currency) const {
+    if (!bonds.count(currency))
+        throw std::out_of_range("");
+    return bonds.at(currency).GetPeriod();
+}
+
+int Market::GetLifeSpan(Currency currency) const {
+    if (!bonds.count(currency))
+        throw std::out_of_range("");
+    return bonds.at(currency).GetLifeSpan();
+}
+
+double Market::GetBuyRateStock(Currency currency) const {
+    if (!stocks.count(currency))
+        throw std::out_of_range("");
+    return stocks.at(currency).GetBuyRate();
+}
+
+double Market::GetSellRateStock(Currency currency) const {
+    if (!stocks.count(currency))
+        throw std::out_of_range("");
+    return stocks.at(currency).GetSellRate();
+}
+
+double Market::GetDividendsStock(Currency currency) const {
+    if (!stocks.count(currency))
+        throw std::out_of_range("");
+    return stocks.at(currency).GetDividends();
+}
+
+const std::vector<std::pair<int, double>> &Market::GetGraphStock(Currency currency) const {
+    if (!stocks.count(currency))
+        throw std::out_of_range("");
+    return stocks.at(currency).GetGraph();
+}
+
+int Market::WhenIsThePaymentStock(Currency currency) const {
+    if (!stocks.count(currency))
+        throw std::out_of_range("");
+    return stocks.at(currency).WhenIsThePayment();
+}
+
+double Market::GetBuyRateAsset(Currency currency) const {
+    if (!assets.count(currency))
+        throw std::out_of_range("");
+    return assets.at(currency).GetBuyRate();
+}
+
+double Market::GetSellRateAsset(Currency currency) const {
+    if (!assets.count(currency))
+        throw std::out_of_range("");
+    return assets.at(currency).GetSellRate();
+}
+
+const std::vector<std::pair<int, double>> &Market::GetGraphAsset(Currency currency) const {
+    if (!assets.count(currency))
+        throw std::out_of_range("");
+    return assets.at(currency).GetGraph();
+}
+
+void Market::Iterate(double spread, double tax, int month) {
+    for (auto& [currency, bond] : bonds)
+        bond.Iterate(spread, tax, GetRandNum(), month);
+    for (auto& [currency, stock] : stocks)
+        stock.Iterate(spread, tax, GetRandNum(), month);
+    for (auto& [currency, asset] : assets)
+        asset.Iterate(spread, tax, GetRandNum(), month);
 }
 
 double Market::GetRandNum() {
     return static_cast<double>(rng()) / static_cast<double>(rng.max());
-}
-
-void Market::Iterate() {
-  for (int i = 1; static_cast<Currency>(i) != Currency::__Last; ++i) {
-      currency_exchange_rate.at(static_cast<Currency>(i)).Iterate(GetRandNum(), spread);
-  }
-
-  deposit_percent *= 2 * (GetRandNum()) * spread / 10 + 1 - spread;
-
-  if (deposit_percent > 0.17)
-      deposit_percent = 0.17;
-}
-
-const char *Market::DoesNotExistCurrency::what() {
-  return "There is no such currency.";
 }

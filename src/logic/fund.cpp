@@ -1,167 +1,151 @@
 #include "fund.hpp"
 
-Fund::Fund(double capitalization, int months_amount)
-    : conventional_units(capitalization),
-      capitalization(capitalization),
-      delta_capitalization(0),
-      deposit(months_amount + 1, 0),
-      rng(std::time(nullptr)),
-      names{"Егор",    "Konstantin", "Damir", "Maksim", "Nikita",
-            "Leonard", "Федор",      "Polin", "Arsen",  "Mikhail"},
-      surnames{"Osipov", "Yusupov", "Tursunov", "Alimov", "Saidov",
-               "Alimov", "Yunusov", "ТрифонОв", "Kan",    "Ivanov"} {}
+Fund::Fund(double conventional_units_):
+    conventional_units(conventional_units_), capitalization(0),
+    prev_cost_share(10000), amount_share(0), rng(std::time(0)) {}
 
-double Fund::GetConventionalUnits() const { return conventional_units; }
-
-double Fund::GetAmount(Currency currency) const {
-  if (!currency_amount.count(currency)) {
-    return 0;
-  }
-  return currency_amount.at(currency);
+double Fund::GetCapitalization() const {
+    return capitalization + conventional_units;
 }
 
-double Fund::GetCapitalization() const { return capitalization; }
-
-double Fund::GetDeltaCapitalization() const { return delta_capitalization; }
-
-const std::vector<Depositor> &Fund::GetAllDepositors() const {
-  return depositors;
+double Fund::GetConventionalUnits() const {
+    return conventional_units;
 }
 
-std::vector<std::pair<int, double>> Fund::GetDeposit(int month_count) const {
-  std::vector<std::pair<int, double>> res;
-  for (int i = month_count + 1; i < deposit.size(); i++)
-    if (deposit[i] != 0) res.push_back({i - month_count, deposit[i]});
-
-  return res;
+int Fund::GetAmountShare() const {
+    return amount_share;
 }
 
-double Fund::GetRandNum() {
-  return static_cast<double>(rng()) / static_cast<double>(rng.max());
+const std::vector<Depositor> &Fund::GetDepositors() const {
+    return depositors;
 }
 
-void Fund::Buy(const Market &market, Currency currency, double amount) {
-  double price = amount * market.GetBuyRate(currency).first;
-
-  if (conventional_units < price) {
-    throw NotEnoughConventionalUnitsToBuy();
-  }
-  conventional_units -= price;
-
-  capitalization += market.GetSellRate(currency).first * amount - price;
-  delta_capitalization += market.GetSellRate(currency).first * amount - price;
-
-  currency_amount[currency] += amount;
+const std::vector<UniqueBond> &Fund::GetBonds() const {
+    return bonds;
 }
 
-void Fund::Sell(const Market &market, Currency currency, double amount) {
-  if (GetAmount(currency) < amount) {
-    throw NotEnoughCurrencyToSell();
-  }
-  conventional_units += amount * market.GetSellRate(currency).first;
-  currency_amount[currency] -= amount;
+int Fund::GetStockAmount(Currency currency) const {
+    if (!stocks.count(currency))
+        return 0;
+    return stocks.at(currency);
 }
 
-void Fund::MakeDeposit(const Market &market, double deposit_money, int month,
-                       int duration) {
-  if (GetConventionalUnits() < deposit_money) {
-    throw NotEnoughConventionalUnitsToMakeDeposit();
-  }
-
-  conventional_units -= deposit_money;
-  capitalization -= deposit_money;
-  delta_capitalization -= deposit_money;
-
-  deposit[month] +=
-      deposit_money * std::pow(market.GetDepositPercent() + 1, duration);
+double Fund::GetAssetAmount(Currency currency) const {
+    if (!assets.count(currency))
+        return 0;
+    return assets.at(currency);
 }
 
-void Fund::Iterate(const Market &market, int month, double tax,
-                   double dividends) {
-  delta_capitalization = -capitalization;
+void Fund::BuyBond(const Market &market, Currency currency, int amount) {
+    double price = amount * market.GetBuyRateBond(currency);
+    if (price > conventional_units)
+        throw std::exception();
+    conventional_units -= price;
+    bonds.emplace_back(market.GetBond(currency), amount);
+    capitalization += amount * market.GetTrueCostBond(currency);
+}
 
-  capitalization = 0;
+void Fund::BuyStock(const Market &market, Currency currency, int amount) {
+    double price = amount * market.GetBuyRateStock(currency);
+    if (price > conventional_units)
+        throw std::exception();
+    conventional_units -= price;
+    stocks[currency] += amount;
+    capitalization += amount * market.GetSellRateStock(currency);
+}
 
-  for (auto [currency, amount] : currency_amount) {
-    capitalization += market.GetSellRate(currency).first * amount;
-    conventional_units += market.GetDividends(currency) * amount;
-  }
+void Fund::BuyAsset(const Market &market, Currency currency, double amount) {
+    double price = amount * market.GetBuyRateAsset(currency);
+    if (price > conventional_units)
+        throw std::exception();
+    conventional_units -= price;
+    assets[currency] += amount;
+    capitalization += amount * market.GetSellRateAsset(currency);
+}
 
-  double out_come = 0;
-  for (auto& depositor : depositors)
-      out_come += depositor.GetDeposit();
+void Fund::SellStock(const Market &market, Currency currency, int amount) {
+    if (amount > GetStockAmount(currency))
+        throw std::exception();
+    conventional_units += amount * market.GetSellRateStock(currency);
+    stocks[currency] -= amount;
+    capitalization -= amount * market.GetSellRateStock(currency);
+}
 
-  out_come *= dividends / 100;
-  if (out_come > conventional_units)
-      throw NotEnoughConventionalUnitsToIterate();
+void Fund::SellAsset(const Market &market, Currency currency, double amount) {
+    if (amount > GetAssetAmount(currency))
+        throw std::exception();
+    conventional_units += amount * market.GetSellRateAsset(currency);
+    assets[currency] -= amount;
+    capitalization -= amount * market.GetSellRateAsset(currency);
+}
 
-  std::vector<Depositor> newDepositors;
+void Fund::Iterate(const Market& market, double spread, double tax, int month) {
+    capitalization = 0;
 
-  for (auto& depositor : depositors) {
-    conventional_units +=
-        depositor.Iterate(dividends, GetRandNum(), market.GetSpread());
-    if (!depositor.HasLeft()) {
-      newDepositors.push_back(depositor);
+    for (auto& [currency, amount] : assets)
+        capitalization += amount * market.GetSellRateAsset(currency);
+
+    for (auto& [currency, amount] : stocks) {
+        capitalization += amount * market.GetSellRateStock(currency);
+        conventional_units += amount * market.GetDividendsStock(currency);
     }
-  }
 
-  depositors = newDepositors;
+    std::vector<UniqueBond> new_bonds;
 
-  conventional_units += deposit[month];
-  capitalization += conventional_units;
-  delta_capitalization += capitalization;
-
-  if (delta_capitalization > 0) {
-    int cntNewDepositors =
-        delta_capitalization * 88.0 / capitalization * GetRandNum();
-    for (int i = 0; i < cntNewDepositors; i++) {
-      Depositor newDepositor;
-      double depositor_money =
-          newDepositor.SetDepositor(GetRandNum(), GenName(), GenSurname());
-
-      conventional_units += depositor_money;
-      capitalization += depositor_money;
-      delta_capitalization += depositor_money;
-
-      depositors.push_back(newDepositor);
+    for (auto& bond : bonds) {
+        bond.Iterate(spread, tax, GetRandNum(), month);
+        conventional_units += bond.GetDividends();
+        if (!bond.HasLeft()) {
+            capitalization += bond.GetTrueCost();
+            new_bonds.emplace_back(std::move(bond));
+        }
     }
-  }
+    bonds = new_bonds;
 
-  if (delta_capitalization > 0) {
-    conventional_units -= delta_capitalization * tax;
-    capitalization -= delta_capitalization * tax;
-    delta_capitalization -= delta_capitalization * tax;
-  }
+    double cost_share = GetCapitalization() / static_cast<double>(amount_share + 1);
 
-  if (conventional_units < 0) {
-      conventional_units = 0;
-      throw NotEnoughConventionalUnitsToIterate();
-  }
+    std::vector<Depositor> new_depositors;
+
+    for (auto& depositor : depositors) {
+        int delta_amount_share = depositor.Iterate(prev_cost_share, cost_share, GetRandNum(), GetRandNum());
+        amount_share += delta_amount_share;
+
+        double delta_conventional_units = static_cast<double>(delta_amount_share) * cost_share;
+        conventional_units += delta_conventional_units;
+
+        if (conventional_units < 0)
+            throw std::exception();
+
+        if (!depositor.HasLeft())
+            new_depositors.emplace_back(std::move(depositor));
+    }
+    depositors = new_depositors;
+    prev_cost_share = cost_share;
+
+    GenNewDepositors(0.5 + (cost_share - prev_cost_share) / (2. * prev_cost_share));
+}
+
+void Fund::GenNewDepositors(double chance) {
+    double rand_num1 = GetRandNum(), rand_num2 = GetRandNum();
+    if (rand_num1 <= chance) {
+        int amount_new_depositors = ceil(rand_num2 * static_cast<double>(depositors.size()) / 2.);
+        for (int i = 0; i < amount_new_depositors; i++) {
+            int delta_amount_share = GetRandNum() * 10;
+            depositors.emplace_back(GenName(), GenSurname(), delta_amount_share);
+            amount_share += delta_amount_share;
+            conventional_units += prev_cost_share * delta_amount_share;
+        }
+    }
 }
 
 std::string Fund::GenName() {
-  int k = rng() % names.size();
-  return names[k];
+    return "Егор";
 }
 
 std::string Fund::GenSurname() {
-  int k = rng() % surnames.size();
-  return surnames[k];
+    return "Трифонов";
 }
 
-const char *Fund::NotEnoughConventionalUnitsToBuy::what() const noexcept {
-  return "Not enough units to buy.";
-}
-
-const char *Fund::NotEnoughConventionalUnitsToMakeDeposit::what()
-    const noexcept {
-  return "Not enough units to make deposit.";
-}
-
-const char *Fund::NotEnoughCurrencyToSell::what() const noexcept {
-  return "Not enoughs currency to sell.";
-}
-
-const char *Fund::NotEnoughConventionalUnitsToIterate::what() const noexcept {
-  return "Not enoughs currency to iterate.";
+double Fund::GetRandNum() {
+    return static_cast<double>(rng()) / static_cast<double>(rng.max());
 }

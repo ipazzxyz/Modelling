@@ -1,20 +1,16 @@
 #pragma once
-
 #include <string>
+#include <vector>
 
 class Asset {
 public:
-    void SetAsset(double cost, double percent);
-
-    std::pair<double, double> GetBuyRate() const;
-
-    std::pair<double, double> GetSellRate() const;
-
+    Asset(double cost_);
+    double GetBuyRate() const;
+    double GetSellRate() const;
+    const std::vector<std::pair<int, double>>& GetGraph() const;
     double GetDividends() const;
-
-    void Iterate(double rand_num, double spread);
-
-private:
-    double cost, delta_cost;
-    double percent;
+    virtual void Iterate(double spread, double tax, double rand_num, int month);
+protected:
+    double cost, dividends;
+    std::vector<std::pair<int, double>> graph;
 };

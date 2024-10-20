@@ -1,23 +1,25 @@
 #include "asset.hpp"
 
-void Asset::SetAsset(double cost_, double percent_) {
-    cost = cost_;
-    percent = percent_;
+Asset::Asset(double cost_) : cost(cost_), graph{{1, cost}} {}
+
+
+double Asset::GetBuyRate() const {
+    return cost * 1.1;
 }
 
-std::pair<double, double> Asset::GetBuyRate() const {
-    return {cost * 1.1, delta_cost * 1.1};
+double Asset::GetSellRate() const {
+    return cost;
 }
 
-std::pair<double, double> Asset::GetSellRate() const {
-    return {cost, delta_cost};
+const std::vector<std::pair<int, double>> &Asset::GetGraph() const {
+    return graph;
 }
 
 double Asset::GetDividends() const {
-    return cost * percent;
+    return dividends;
 }
 
-void Asset::Iterate(double rand_num, double spread) {
-    delta_cost = -cost;
-    delta_cost += cost *= 2 * spread * rand_num - spread + 1;
+void Asset::Iterate(double spread, double tax, double rand_num, int month) {
+    cost = cost * (2. * spread * rand_num - spread + 1.);
+    graph.emplace_back(month, cost);
 }

@@ -1,7 +1,7 @@
 
 #include "system.hpp"
 
-System::System(double spread_, double tax_, double conventional_units_, int amount_month_): fund(conventional_units_),
+System::System(double spread_, double tax_, double conventional_units_, int amount_month_): fund(conventional_units_, amount_month_),
     market(), spread(spread_), tax(tax_), amount_month(amount_month_), month(1) {}
 
 const std::map<Currency, Bond> &System::GetAllBonds() const {
@@ -44,6 +44,10 @@ int System::GetAmountShare(Currency currency) const {
     return fund.GetAmountShare();
 }
 
+void System::MakeDeposit(double deposit, int term) {
+    fund.MakeDeposit(market, deposit, term, month);
+}
+
 void System::BuyBond(Currency currency, int amount) {
     fund.BuyBond(market, currency, amount);
 }
@@ -66,8 +70,12 @@ void System::SellAsset(Currency currency, double amount) {
 
 void System::Iterate() {
     if (++month > amount_month)
-        throw std::out_of_range("");
+        throw IterationReachLimit();
 
     market.Iterate(spread, tax, month);
     fund.Iterate(market, spread, tax, month);
+}
+
+const char *System::IterationReachLimit::what() const noexcept {
+    return "Количество итераций достигло максимума";
 }

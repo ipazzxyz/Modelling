@@ -16,12 +16,17 @@ public:
     int GetStockAmount(Currency currency) const;
     int GetAssetAmount(Currency currency) const;
     int GetAmountShare(Currency currency) const;
+    void MakeDeposit(double deposit, int term);
     void BuyBond(Currency currency, int amount);
     void BuyStock(Currency currency, int amount);
     void BuyAsset(Currency currency, double amount);
     void SellStock(Currency currency, int amount);
     void SellAsset(Currency currency, double amount);
     void Iterate();
+
+    class IterationReachLimit : public std::exception {
+        const char *what() const noexcept;
+    };
 private:
     int month, amount_month;
     double spread, tax;

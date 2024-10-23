@@ -21,97 +21,102 @@ const std::map<Currency, Asset> &Market::GetAllAssets() const {
     return assets;
 }
 
+double Market::GetDepositPercent() const {
+    return percent;
+}
+
 const Bond &Market::GetBond(Currency currency) const {
     if (!bonds.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistBond();
     return bonds.at(currency);
 }
 
 double Market::GetBuyRateBond(Currency currency) const {
     if (!bonds.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistBond();
     return bonds.at(currency).GetBuyRate();
 }
 
 const std::vector<std::pair<int, double>>& Market::GetGraphBond(Currency currency) const {
     if (!bonds.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistBond();
     return bonds.at(currency).GetGraph();
 }
 
 double Market::GetTrueCostBond(Currency currency) const {
     if (!bonds.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistBond();
     return bonds.at(currency).GetTrueCost();
 }
 
 double Market::GetPercentBond(Currency currency) const {
     if (!bonds.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistBond();
     return bonds.at(currency).GetPercent();
 }
 
 int Market::GetPeriod(Currency currency) const {
     if (!bonds.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistBond();
     return bonds.at(currency).GetPeriod();
 }
 
 int Market::GetLifeSpan(Currency currency) const {
     if (!bonds.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistBond();
     return bonds.at(currency).GetLifeSpan();
 }
 
 double Market::GetBuyRateStock(Currency currency) const {
     if (!stocks.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistStock();
     return stocks.at(currency).GetBuyRate();
 }
 
 double Market::GetSellRateStock(Currency currency) const {
     if (!stocks.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistStock();
     return stocks.at(currency).GetSellRate();
 }
 
 double Market::GetDividendsStock(Currency currency) const {
     if (!stocks.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistStock();
     return stocks.at(currency).GetDividends();
 }
 
 const std::vector<std::pair<int, double>> &Market::GetGraphStock(Currency currency) const {
     if (!stocks.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistStock();
     return stocks.at(currency).GetGraph();
 }
 
 int Market::WhenIsThePaymentStock(Currency currency) const {
     if (!stocks.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistStock();
     return stocks.at(currency).WhenIsThePayment();
 }
 
 double Market::GetBuyRateAsset(Currency currency) const {
     if (!assets.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistAsset();
     return assets.at(currency).GetBuyRate();
 }
 
 double Market::GetSellRateAsset(Currency currency) const {
     if (!assets.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistAsset();
     return assets.at(currency).GetSellRate();
 }
 
 const std::vector<std::pair<int, double>> &Market::GetGraphAsset(Currency currency) const {
     if (!assets.count(currency))
-        throw std::out_of_range("");
+        throw DoesNotExistAsset();
     return assets.at(currency).GetGraph();
 }
 
 void Market::Iterate(double spread, double tax, int month) {
+    percent = percent * (2. * spread * GetRandNum() - spread + 1.);
     for (auto& [currency, bond] : bonds)
         bond.Iterate(spread, tax, GetRandNum(), month);
     for (auto& [currency, stock] : stocks)
@@ -122,4 +127,16 @@ void Market::Iterate(double spread, double tax, int month) {
 
 double Market::GetRandNum() {
     return static_cast<double>(rng()) / static_cast<double>(rng.max());
+}
+
+const char *Market::DoesNotExistBond::what() const noexcept {
+    return "Такой облегации не существует";
+}
+
+const char *Market::DoesNotExistStock::what() const noexcept {
+    return "Такой акции не существует";
+}
+
+const char *Market::DoesNotExistAsset::what() const noexcept {
+    return "Такого актива не существует";
 }

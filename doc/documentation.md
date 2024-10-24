@@ -21,13 +21,30 @@ $S_{ i } = S_{ i - 1 } * ( 1 + 2 * R * X - X)$, где S - стоимость, R
 void System::Iterate();
 ```
 
+### Покупка/продажа
+
+```C++
+void BuyBond(Currency currency, int amount);
+void BuyStock(Currency currency, int amount);
+void BuyAsset(Currency currency, double amount);
+void SellStock(Currency currency, int amount);
+void SellAsset(Currency currency, double amount);
+```
 ### Доступ к другим классам
 
 Осуществляется через геттеры.
 
 ```C++
-Market System::GetMarket();
-Fund System::GetFund();
+const std::map<Currency, Bond>& GetAllBonds() const;
+const std::map<Currency, Stock>& GetAllStocks() const;
+const std::map<Currency, Asset>& GetAllAssets() const;
+const std::vector<UniqueBond>& GetAllYourBonds() const;
+const std::vector<Depositor>& GetAllYourDepositors() const;
+double GetConventionalUnits() const;
+double GetCapitalization() const;
+int GetStockAmount(Currency currency) const;
+int GetAssetAmount(Currency currency) const;
+int GetAmountShare(Currency currency) const;
 ```
 
 ## Класс рынка. class Market
@@ -46,11 +63,29 @@ double Market::GetSellPrice(Currency название);
 ```C++
 double GetDepositPercent();
 ```
+### Ошибки
+
+```C++
+class DoesNotExistBond: public std::exception {
+public:
+    const char *what() const noexcept;
+};
+class DoesNotExistStock: public std::exception {
+public:
+    const char *what() const noexcept;
+};
+class DoesNotExistAsset: public std::exception {
+public:
+    const char *what() const noexcept;
+};
+```
 
 ### Получение map
 
 ```C++
-double GetDividends(Currency название);
+const std::map<Currency, Bond>& GetAllBonds() const;
+const std::map<Currency, Stock>& GetAllStocks() const;
+const std::map<Currency, Asset>& GetAllAssets() const;
 ```
 
 ### Получение количество дивидендов за единицу валюты 
@@ -80,18 +115,25 @@ double Fund::GetAmount(Currency название);
 ```C++
 double Fund::GetCapitalization(Market &market);
 ```
+### Создание депозита
 
+```C++
+void MakeDeposit(const Market& market, double deposit, int term, int month);
+```
 ### Получение списка вкладчиков
 
 ```C++
-vector<Depositor> &GetALlDepositors();
+vector<Depositor> &GetDepositors();
 ```
 
 ### Покупка / продажа
 
 ```C++
-void Buy(const Market &market, Currency currency, int amount);  
-void Sell(const Market &market, Currency currency, int amount);
+void BuyBond(const Market& market, Currency currency, int amount);
+void BuyStock(const Market& market, Currency currency, int amount);
+void BuyAsset(const Market& market, Currency currency, double amount);
+void SellStock(const Market& market, Currency currency, int amount);
+void SellAsset(const Market& market, Currency currency, double amount);
 ```
 
 
@@ -103,4 +145,4 @@ void Sell(const Market &market, Currency currency, int amount);
 
 ## Остальные валюты
 
-Наименования остальных валют лежат в enum class Currency, а логика в Asset. Работа с ними происходит через интерфейсы классов, описанных выше.
+Наименования остальных валют лежат в enum class Currency, а логика в Asset (или наследованных от Asset классах, в зависимости от типа валюты). Работа с ними происходит через интерфейсы классов, описанных выше.

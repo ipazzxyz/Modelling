@@ -7,7 +7,7 @@
 ### Инициализация
 
 ```C++
-System::System(double разброс,  double налог, double изначальная капитализация, int кол-во месяцев (M));
+System::System(int кол-во месяцев (M), double изначальная капитализация, double налог, double разброс);
 ```
 
 ### Разброс
@@ -136,6 +136,88 @@ void SellStock(const Market& market, Currency currency, int amount);
 void SellAsset(const Market& market, Currency currency, double amount);
 ```
 
+
+## Класс валюты. class Asset
+
+Хранит информацию о валюте и логику работы с ней
+### Получение цены покупки/продажи
+
+```C++
+double GetBuyRate() const;
+double GetSellRate() const;
+```
+
+### Получение дивидендов
+
+```C++
+double GetDividends() const;
+```
+
+### Пересчёт цен
+
+```C++
+virtual void Iterate(double spread, double tax, double rand_num, int month);
+```
+
+### Получение информации для построения графика цены
+
+```C++
+const std::vector<std::pair<int, double>>& GetGraph() const;
+```
+
+## Класс акции. class Stock
+
+Хранит информацию об акции и логику работы с ней. Наследован от Asset
+### Когда произойдёт выплата
+
+```C++
+int WhenIsThePayment() const;
+```
+### Пересчёт цен
+
+```C++
+void Iterate(double spread, double tax, double rand_num, int month) override final;
+```
+
+## Класс облигации. class Bond
+
+Хранит информацию об облигации и логику работы с ней. Наследован от Asset
+### Получение цены и процентов
+
+```C++
+double GetTrueCost() const;
+double GetPercent() const;
+```
+### "Срок жизни" облигации
+
+```C++
+int GetLifeSpan() const;
+```
+### Начисление в конце срока
+
+```C++
+double GetTrueCost() const;
+```
+
+## Класс уникальной облигации. class UniqueBond
+
+Хранит информацию об универсальной облигации и логику работы с ней. Наследован от Bond
+### Пересчёт цены облигации
+
+```C++
+void Iterate(double spread, double tax, double rand_num, int month);
+```
+### "Срок жизни" и цена
+
+```C++
+std::pair<int, double> WhenIsThePayment() const;
+std::pair<int, double> WhenIsTheEnd() const;
+```
+### Получение цены
+
+```C++
+int GetAmount() const;
+```
 
 # Логика
 

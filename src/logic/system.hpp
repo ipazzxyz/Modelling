@@ -11,6 +11,9 @@ public:
     const std::map<Currency, Asset>& GetAllAssets() const;
     const std::vector<UniqueBond>& GetAllYourBonds() const;
     const std::vector<Depositor>& GetAllYourDepositors() const;
+    std::vector<std::pair<int, double>> GetDeposit() const;
+    int GetAmountMonth() const;
+    int GetMonth() const;
     double GetConventionalUnits() const;
     double GetCapitalization() const;
     int GetStockAmount(Currency currency) const;

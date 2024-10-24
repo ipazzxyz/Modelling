@@ -24,6 +24,18 @@ const std::vector<Depositor> &System::GetAllYourDepositors() const {
     return fund.GetDepositors();
 }
 
+std::vector<std::pair<int, double>> System::GetDeposit() const {
+    return fund.GetDeposit(month);
+}
+
+int System::GetAmountMonth() const {
+    return amount_month;
+}
+
+int System::GetMonth() const {
+    return month;
+}
+
 double System::GetConventionalUnits() const {
     return fund.GetConventionalUnits();
 }
